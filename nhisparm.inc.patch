@@ -1,0 +1,55 @@
+--- lsdyna_object_version_ref/nhisparm.inc	2020-06-15 19:55:22.000000000 +0200
++++ lsdyna_object_version/nhisparm.inc	2021-08-16 12:30:06.417213263 +0200
+@@ -1,29 +1,29 @@
+-c
++!
+       integer    NHISVAR
+       parameter (NHISVAR=200)
+-c
+-c     NHISVAR - maximum number of history variables
+-c               for user materials (/aux14loc/)
+-c
+-c     the default and the minumum number is 200
+-c     NHISVAR must be greater than or equal to 200
+-c
++!
++!     NHISVAR - maximum number of history variables
++!               for user materials (/aux14loc/)
++!
++!     the default and the minumum number is 200
++!     NHISVAR must be greater than or equal to 200
++!
+       integer    NHISVUE
+       parameter (NHISVUE=100)
+-c
+-c     NHISVUE - maximum number of history variables 
+-c               for user elements (/bel8loc/)
+-c
+-c     the default and the minumum number is 100
+-c     NHISVUE must be greater than or equal to 100
+-c
++!
++!     NHISVUE - maximum number of history variables
++!               for user elements (/bel8loc/)
++!
++!     the default and the minumum number is 100
++!     NHISVUE must be greater than or equal to 100
++!
+       integer    NXDOFUE
+       parameter (NXDOFUE=3)
+-c
+-c     NXDOFUE - maximum number of extra degrees of freedom 
+-c               for user elements (/ue1loc/)
+-c
+-c     the default and the minumum number is 3 
+-c     NXDOFUE must be greater than or equal to 3
+-c     ! maximum allowable number is NXDOFUE=15
+-c
++!
++!     NXDOFUE - maximum number of extra degrees of freedom
++!               for user elements (/ue1loc/)
++!
++!     the default and the minumum number is 3
++!     NXDOFUE must be greater than or equal to 3
++!     ! maximum allowable number is NXDOFUE=15
++!

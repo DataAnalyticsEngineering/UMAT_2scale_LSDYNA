@@ -1,0 +1,12 @@
+*.mod
+
+*.out
+
+forpy_mod.o
+forpy_mod.mod
+
+del*
+
+__pycache__/
+
+examples_extra/

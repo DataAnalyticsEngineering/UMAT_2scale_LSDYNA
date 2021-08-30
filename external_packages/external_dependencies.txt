@@ -1,0 +1,11 @@
+ezh5:
+  Easy HDF5 C++ Library
+  https://github.com/mileschen360/ezh5
+
+ttb:
+  Tensor Toolbox for Modern Fortran (ttb)
+  https://github.com/adtzlr/ttb
+
+Forpy:
+  A library for Fortran-Python interoperability.
+  https://github.com/ylikx/forpy

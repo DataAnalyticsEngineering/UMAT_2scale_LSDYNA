@@ -1,0 +1,111 @@
+--- lsdyna_object_version_ref/dyn21umats.f	2020-06-24 18:43:36.000000000 +0200
++++ lsdyna_object_version/dyn21umats.f	2021-08-16 12:30:06.409213222 +0200
+@@ -230,57 +230,57 @@
+ c$$$c
+ c$$$      return
+ c$$$      end
+-      subroutine umat43(cm,eps,sig,epsp,hsv,dt1,capa,etype,tt,
+-     1 temper,failel,crv,nnpcrv,cma,qmat,elsiz,idele,reject)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      include 'bk06.inc'
+-      include 'iounits.inc'
+-      dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*),qmat(3,3)
+-      integer nnpcrv(*)
+-      character*5 etype
+-      logical failel,reject
+-      integer*8 idele
+-c
+-      if (ncycle.eq.1) then
+-        call usermsg('mat43')
+-      endif
+-c
+-      return
+-      end
+-      subroutine umat44 (cm,eps,sig,epsp,hsv,dt1,capa,etype,tt,
+-     1 temper,failel,crv,nnpcrv,cma,qmat,elsiz,idele,reject)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      include 'bk06.inc'
+-      include 'iounits.inc'
+-      dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*),qmat(3,3)
+-      integer nnpcrv(*)
+-      character*5 etype
+-      logical failel,reject
+-      integer*8 idele
+-c
+-c
+-      if (ncycle.eq.1) then
+-        call usermsg('mat44')
+-      endif
+-c
+-      return
+-      end
++!       subroutine umat43(cm,eps,sig,epsp,hsv,dt1,capa,etype,tt,
++!      1 temper,failel,crv,nnpcrv,cma,qmat,elsiz,idele,reject)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       include 'bk06.inc'
++!       include 'iounits.inc'
++!       dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*),qmat(3,3)
++!       integer nnpcrv(*)
++!       character*5 etype
++!       logical failel,reject
++!       integer*8 idele
++! c
++!       if (ncycle.eq.1) then
++!         call usermsg('mat43')
++!       endif
++! c
++!       return
++!       end
++!       subroutine umat44 (cm,eps,sig,epsp,hsv,dt1,capa,etype,tt,
++!      1 temper,failel,crv,nnpcrv,cma,qmat,elsiz,idele,reject)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       include 'bk06.inc'
++!       include 'iounits.inc'
++!       dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*),qmat(3,3)
++!       integer nnpcrv(*)
++!       character*5 etype
++!       logical failel,reject
++!       integer*8 idele
++! c
++! c
++!       if (ncycle.eq.1) then
++!         call usermsg('mat44')
++!       endif
++! c
++!       return
++!       end
+       subroutine umat45 (cm,eps,sig,epsp,hsv,dt1,capa,
+      . etype,time,temp,failel,crv,nnpcrv,cma,qmat,elsiz,idele,ih,
+      . reject)

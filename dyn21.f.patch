@@ -1,0 +1,38 @@
+--- lsdyna_object_version_ref/dyn21.f	2020-06-24 18:43:36.000000000 +0200
++++ lsdyna_object_version/dyn21.f	2021-08-16 12:30:06.421213284 +0200
+@@ -1706,6 +1706,8 @@
+      . messag,totalm,cycle,idrint,mtype,mxrb,nrba,rbcor,x,rbv,nrbn,
+      . nrb,xrb,yrb,zrb,axrb,ayrb,azrb,dtx,nmmat,rba,fvalnew,fvalold,
+      . fvalmid,fvalnxt)
++      
++      use forpy_mod
+ c
+ c******************************************************************
+ c|  Livermore Software Technology Corporation  (LSTC)             |
+@@ -1873,6 +1875,26 @@
+      . zrb(*),axrb(*),ayrb(*),azrb(*),rba(6,*),fvalnew(*),
+      . fvalold(*),fvalmid(*),fvalnxt(*)
+       real*8 ut(3,*),ur(3,*)
++      include 'nlqparm'
++      include 'nhisparm.inc'
++      include 'rve/daeblk.f'
++      if (time>=endtim) then
++        call forpy_finalize
++        ! voids are not handeled here
++        vol_av_sig = vol_av_sig / weights
++        vol_av_flux = vol_av_flux / weights
++        ! open(91, file = 'dae_rve.txt',status="unknown",action="write")
++        write(*,*) '--------------------------'
++        write(*,*) 'weights', weights
++        write(*,*) 'stress(xx,yy,zz,xy,yz,xz), flux(x,y,z)'
++        write(*,'(6(ES11.4,3x))') vol_av_sig
++        write(*,'(3(ES11.4,3x))') vol_av_flux
++        write(*,*) '--------------------------'
++      endif
++      last_cycle=0
++      weights=0.0
++      vol_av_sig(:)=0.0
++      vol_av_flux(:)=0.0
+ c
+ c     MPP special variables
+ c
