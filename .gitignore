@@ -27,6 +27,7 @@ lspost.msg
 *.part_des*
 *.spooles.*
 *.db
+*.tprint
 
 *.mp4
 *.png

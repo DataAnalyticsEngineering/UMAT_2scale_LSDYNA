@@ -4,6 +4,9 @@
 # chmod +x setup_dyna.sh
 # bash /home/alameddin/simkom/src_pyrve/dyna/setup_dyna.sh q
 
+dae_umat_2scale_lsdyna=/home/alameddin/simkom/src_dyna
+
+cd $dae_umat_2scale_lsdyna
 source set_env.sh
 
 folder=lsdyna_object_version
