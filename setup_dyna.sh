@@ -7,23 +7,24 @@
 source set_env.sh
 
 folder=lsdyna_object_version
+folder_ref=lsdyna_object_version_ref
 
 mode="$1"
 
 if [[ "$mode" == "quick" ]] || [[ "$mode" == "q" ]]; then
   echo "Quick mode"
   rm -rf $folder
-  mkdir $folder
-  cp -r lsdyna_object_version_ref/* $folder
+  cp -r $folder_ref $folder
 elif [[ "$mode" == "debug" ]] || [[ "$mode" == "d" ]]; then
   echo "use edited files"
 else
   echo "Normal mode"
-  rm -rf $folder
-  mkdir $folder
-  tar -xvf ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz -C $folder
-  mv $folder/usermat/* $folder/
-  rm -rf $folder/usermat
+  rm -rf $folder $folder_ref
+  mkdir $folder_ref
+  tar -xvf ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz -C $folder_ref
+  mv $folder_ref/usermat/* $folder_ref/
+  rm -rf $folder_ref/usermat
+  cp -r $folder_ref $folder
 fi
 
 # fix file formatting, to install relevant tools: pip install yapf clang-format fprettify
