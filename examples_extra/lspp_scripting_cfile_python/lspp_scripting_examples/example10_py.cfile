@@ -1,0 +1,6 @@
+parameter input "point.k"
+parameter  output "bk1.k"
+parameter  meshsize 60.0
+parameter  zlength 100.0
+parameter  zelem 10
+runpython "example10.py"  &input &output &meshsize &zlength &zelem

@@ -1,0 +1,7 @@
+parameter RAD1 50.0
+expression RAD2 2*&RAD1
+expression RAD3 3*&RAD1
+$# coordinate system 0 0 -> global
+sphere 0 0 &RAD1 0.0 360.0 -90.0 90.0   0 0 0
+sphere 0 0 &RAD2 0.0 360.0 -90.0 90.0 200 0 0
+sphere 0 0 &RAD3 0.0 360.0 -90.0 90.0 600 0 0

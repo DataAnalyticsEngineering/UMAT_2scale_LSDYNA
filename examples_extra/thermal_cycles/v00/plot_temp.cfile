@@ -1,0 +1,4 @@
+open d3plot "d3plot"
+genselect target node
+genselect node add circle2 in 25 8 8 0.2 0 0 1 0.5
+ntime 17

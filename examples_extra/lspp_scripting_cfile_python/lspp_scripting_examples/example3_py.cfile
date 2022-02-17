@@ -1,0 +1,7 @@
+parameter  pa 9.0E+07
+parameter  pb 7000.0
+parameter  pc  4.0E+07
+parameter  npt  300
+parameter  xmin  0.0
+parameter  xmax  0.00126
+runpython "example3.py"  &npt &pa &pb &pc &xmin &xmax

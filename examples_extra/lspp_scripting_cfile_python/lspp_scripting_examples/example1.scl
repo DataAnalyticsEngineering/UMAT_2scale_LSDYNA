@@ -1,0 +1,33 @@
+/* LS-PrePost Script */
+/* script to get no. of parts in the model, and get all the part IDs Also draw each part by itself and auto center it before print the a png picture of each part to a file which has the part id as the file name 
+*/
+define:
+void main(void)
+{
+     Int i=0;
+     char buf[256];
+     Int partnum = 0;
+     Int *ids = NULL;
+
+/* partnum is no. of parts in the model */
+     partnum = SCLGetDataCenterInt("num_validparts");
+/* allocate memory to store part IDs */
+     ids = malloc(partnum*sizeof(Int));
+/* Get user part ids from DATA Center */
+     partnum=SCLGetDataCenterIntArray("validpart_ids",&ids, 0, 0);
+/* Loop through all the parts */
+     for(i=0;i<partnum;i=i+1)
+     {
+/* build command to draw one part, also Auto center it */
+         sprintf(buf,"m %d",ids[i]);
+         ExecuteCommand(buf);
+         ExecuteCommand("ac");
+/* Build command to print the picture with png format */
+         sprintf(buf,"print png part_%d.png LANDSCAPE nocompress gamma 1.000 opaque enlisted \"OGL1x1\"", ids[i]);
+         ExecuteCommand(buf);
+      }
+/* Free allocated memory */
+      free(ids);
+      ids = NULL;
+}
+main();

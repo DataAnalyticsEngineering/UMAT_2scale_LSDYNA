@@ -1,5 +1,6 @@
-*.mod
+todo
 
+*.mod
 *.out
 
 forpy_mod.o
@@ -9,4 +10,28 @@ del*
 
 __pycache__/
 
-examples_extra/
+lspost.cfile
+lspost.msg
+
+*.bg_switch
+*.d3dump*
+*.d3hsp
+*.d3plot*
+*.group_file
+*.kill_by_pid
+*.messag
+*.dyna.*
+*.status.out
+*.disk.LU.*
+*.elout*
+*.part_des*
+*.spooles.*
+*.db
+
+*.mp4
+*.png
+
+*.7z
+*.zip
+
+

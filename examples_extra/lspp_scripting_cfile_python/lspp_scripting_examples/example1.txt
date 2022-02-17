@@ -1,0 +1,6 @@
+Example 1:
+Script to get no. of parts in the model, 
+Get all the part IDs, then draw each part by itself and auto center it 
+For each part, capture a picture in png format, and save it to a file which has the part id as the file name.
+
+ 
