@@ -1,13 +1,59 @@
-density_cu = lambda x: 8.93300e-06
-poisson_ratio_cu = lambda x: 3.40000e-01
-conductivity_cu = lambda x: 4.20749e+05 - 6.84915e+01 * x
-heat_capacity_cu = lambda x: 3.16246e+08 + 3.17858e+05 * x - 3.49795e+02 * x**2 + 1.66327e-01 * x**3
-cte_cu = lambda x: 1.28170e-05 + 8.23091e-09 * x
-elastic_modulus_cu = lambda x: max(6.4126e+05, 1.35742e+08 + 5.85757e+03 * x - 8.16134e+01 * x**2)
+poisson_ratio_cu = lambda x: 3.40000e-01 * x**0
+conductivity_cu = lambda x: 4.20749e+05 * x**0 + -6.84915e+01 * x**1
+heat_capacity_cu = lambda x: 2.94929e+03 * x**0 + 2.30217e+00 * x**1 + -2.95302e-03 * x**2 + 1.47057e-06 * x**3
+cte_cu = lambda x: 1.28170e-05 * x**0 + 8.23091e-09 * x**1
+elastic_modulus_cu = lambda x: 1.35742e+08 * x**0 + 5.85757e+03 * x**1 + -8.16134e+01 * x**2
 
-density_wsc = lambda x: 1.93000e-05
-poisson_ratio_wsc = lambda x: 2.80000e-01
-conductivity_wsc = lambda x: 2.19308e+05 - 1.87425e+02 * x + 1.05157e-01 * x**2 - 2.01180e-05 * x**3
-heat_capacity_wsc = lambda x: 1.23958e+08 + 3.44414e+04 * x - 1.25514e+01 * x**2 + 2.87070e-03 * x**3
-cte_wsc = lambda x: 5.07893e-06 + 5.67524e-10 * x
-elastic_modulus_wsc = lambda x: 4.13295e+08 - 7.83159e+03 * x - 3.65909e+01 * x**2 + 5.48782e-03 * x**3
+yield_cu = lambda x: 1.12133e+02 * x + 3.49810e+04 + 1.53393e+05 * np.tanh(
+    (x / 1000 + -6.35754e-01) / -2.06958e-01) if x < 1000 else 1200.0
+
+poisson_ratio_wsc = lambda x: 2.80000e-01 * x**0
+conductivity_wsc = lambda x: 2.19308e+05 * x**0 + -1.87425e+02 * x**1 + 1.05157e-01 * x**2 + -2.01180e-05 * x**3
+heat_capacity_wsc = lambda x: 2.39247e+03 * x**0 + 6.62775e-01 * x**1 + -2.80323e-04 * x**2 + 6.39511e-08 * x**3
+cte_wsc = lambda x: 5.07893e-06 * x**0 + 5.67524e-10 * x**1
+elastic_modulus_wsc = lambda x: 4.13295e+08 * x**0 + -7.83159e+03 * x**1 + -3.65909e+01 * x**2 + 5.48782e-03 * x**3
+
+if __name__ == '__main__':
+    import numpy as np
+    import pandas as pd
+
+    numper_of_points = 20
+    temp_0 = 293.15
+    temp_max = 1300
+    temp_end = 2000
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, heat_capacity_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('3_crv_heat_capacity_cu.csv', index=False, header=False, float_format='%.3f')
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, conductivity_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('4_crv_conductivity_cu.csv', index=False, header=False, float_format='%.3f')
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, elastic_modulus_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('5_crv_elastic_modulus_cu.csv', index=False, header=False, float_format='%.3f')
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, cte_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('6_crv_cte_cu.csv', index=False, header=False, float_format='%.6e')
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, poisson_ratio_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('7_crv_poisson_ratio_cu.csv', index=False, header=False, float_format='%.3f')
+
+    df = pd.DataFrame(columns=['temp', 'property'])
+    for idx, temp in enumerate(np.linspace(temp_0, temp_max, numper_of_points)):
+        df.loc[idx] = [temp, yield_cu(temp)]
+    df.loc[idx + 1] = [temp_end, df.loc[idx, 'property']]
+    df.to_csv('8_crv_yield_cu.csv', index=False, header=False, float_format='%.3f')
