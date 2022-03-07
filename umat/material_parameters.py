@@ -1,3 +1,9 @@
+min_temperature = 293.15
+max_temperature = 1300
+
+density_cu = lambda x: 1
+density_wsc = lambda x: 1
+
 poisson_ratio_cu = lambda x: 3.40000e-01 * x**0
 conductivity_cu = lambda x: 4.20749e+05 * x**0 + -6.84915e+01 * x**1
 heat_capacity_cu = lambda x: 2.94929e+03 * x**0 + 2.30217e+00 * x**1 + -2.95302e-03 * x**2 + 1.47057e-06 * x**3
