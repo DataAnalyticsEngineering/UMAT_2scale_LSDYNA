@@ -22,7 +22,7 @@ lspost.msg
 *.messag
 *.dyna.*
 *.status.out
-*.disk.LU.*
+*.disk.*
 *.elout*
 *.part_des*
 *.spooles.*
