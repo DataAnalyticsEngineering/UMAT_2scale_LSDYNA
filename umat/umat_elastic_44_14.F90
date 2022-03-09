@@ -1,3 +1,4 @@
+! TODO only forpy_interface.true. is updated so far
 ! Macro
 #define forpy_interface .true.
 #define python_interface .false.
@@ -23,6 +24,7 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    use Tensor
    use forpy_mod
    use iso_fortran_env, only: real64
+   use, intrinsic :: ieee_arithmetic, only: ieee_value, ieee_quiet_nan, ieee_is_nan
 
    implicit none
 
@@ -64,6 +66,13 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    !   write(*,'(6(ES11.4,3x))') eps(1:6)
    ! endif
 
+   if (ncycle .eq. 0) then
+      ! if (.not. ((tt > 0) .and. (dt1 > 0))) then
+      ! hsv(1:43) = ieee_value(1., ieee_quiet_nan)
+      hsv(1) = temper
+      return
+   end if
+
    if (cpp_interface) then
 
       call umat_cpp_mechanical(cm(8), temper, temper, eps, stress, hsv(2:37))
@@ -82,14 +91,18 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
 
       ierror = import_py(py_module, "umat")
 
-      ierror = tuple_create(args, 10)
+      ierror = tuple_create(args, 16)
       ierror = args%setitem(0, 1) ! -> mechanical
       ierror = args%setitem(1, cm(8)) ! mat_id
       ierror = args%setitem(2, temper)
       ierror = args%setitem(3, temper - hsv(1))
 
       do idx = 1, 6
-         ierror = args%setitem(idx + 3, eps(idx))
+         ierror = args%setitem(idx + 3, hsv(idx + 37))
+      end do
+
+      do idx = 1, 6
+         ierror = args%setitem(idx + 9, eps(idx))
       end do
 
       ierror = call_py(return_value, py_module, "rve_solver_factory", args)
@@ -101,6 +114,11 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
          call item%destroy
       end do
       do idx = 2, 37
+         ierror = output_list%getitem(item, idx + 4)
+         ierror = cast(hsv(idx), item)
+         call item%destroy
+      end do
+      do idx = 38, 43
          ierror = output_list%getitem(item, idx + 4)
          ierror = cast(hsv(idx), item)
          call item%destroy
