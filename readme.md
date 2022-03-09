@@ -86,7 +86,8 @@ The new executable will be placed in `dyna_umat_directory/lsdyna_object_version/
 
 - __Discontinued__
   
-  `examples/two_scale/3d_rve`
+  - `examples/two_scale/3d_rve`
+  - `examples/two_scale/2d_rve` 
 
   Here, a thermo-mechanical response of a representative volume element is computed using LS-DYNA.
 
