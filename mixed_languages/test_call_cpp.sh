@@ -1,3 +1,4 @@
+# git clone https://gitlab.com/libeigen/eigen.git
 # gcc -c compiles source files without linking. -> generate .o object file
 
 icc -Wall -c cpp_example.cpp

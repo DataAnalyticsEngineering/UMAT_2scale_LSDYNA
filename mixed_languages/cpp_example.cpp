@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Eigen/Dense"
 
 extern "C" {
 void cppfun_(const double* argument_1, double* argument_2, double& argument_3);
@@ -14,4 +15,7 @@ void cppfun_(const double* argument_1, double* argument_2, double& argument_3)
     }
     argument_3 = 1.3;
     std::cout << std::endl;
+
+    Eigen::MatrixXd m{{1.2, 2.1}, {3.3, 4.5}};
+    std::cout << m << std::endl;
 }
