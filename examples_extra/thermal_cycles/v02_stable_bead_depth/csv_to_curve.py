@@ -12,7 +12,7 @@ output_file = 'curves.k'
 
 input_dictionary = {'*keyword': []}
 for file_name in sorted(glob.glob("*crv*.csv")):
-    curve_id = file_name[0]
+    curve_id = file_name.split('_', 1)[0]
 
     dataframe = pd.read_csv(file_name, header=None)
 
