@@ -1,0 +1,7 @@
+open d3plot "sim.d3plot"
+ac
+fringe 25
+state -1;
+print png "temperature.png" LANDSCAPE nocompress nogamma opaque enlisted OGL1x1
+fringe 1
+print png "stresses.png" LANDSCAPE nocompress nogamma opaque enlisted OGL1x1

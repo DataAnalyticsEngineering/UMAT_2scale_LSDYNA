@@ -1,7 +1,0 @@
-open d3plot "thermomech.d3plot"
-genselect target node
-genselect node add circle2 in 25 8 10 0.2 0 0 1 0.2
-ntime 17
-xyplot 1 savefile ms_csv "temp0.csv" 1 all
-xyplot 1 donemenu
-deletewin 1

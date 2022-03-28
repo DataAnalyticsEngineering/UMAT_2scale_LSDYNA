@@ -2,9 +2,9 @@
 *PARAMETER
 Rendtim, 1
 Rtemp_0, 293.15
-Rdtmin, 1e-3
-Rdtmax, 1e-3
-Rdt0, 1e-3
+Rdtmin, 0.01
+Rdtmax, 0.2
+Rdt0, 0.01
 *CONTROL_ACCURACY
 $#     osu       inn    pidosu      iacc    
 1,,,1
@@ -43,7 +43,7 @@ $#  msglvl    maxitr    abstol    reltol     omega    unused    unused       tsf
 
 *CONTROL_THERMAL_TIMESTEP
 $#      ts       tip       its      tmin      tmax     dtemp      tscp      lcts
-         1       1.0      &dt0    &dtmin    &dtmax     010.0       0.5         0
+         1       1.0      &dt0    &dtmin    &dtmax     500.0       0.5         0
 *PART
 $#                                                                         title
 block
@@ -60,7 +60,7 @@ $#    pid1      pid2      pid3      pid4      pid5      pid6      pid7      pid8
          1         0         0         0         0         0         0         0
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-      0.01
+       0.1
 *DATABASE_EXTENT_BINARY
 $#   neiph     neips    maxint    strflg    sigflg    epsflg    rltflg    engflg
          0         0         3         0         1         1         1         1
@@ -75,13 +75,23 @@ $#    nsid      temp       loc
          0   &temp_0         0
 *BOUNDARY_TEMPERATURE_NODE
          7       111        1.
-$         4       111        1.
+*BOUNDARY_TEMPERATURE_SET
+         5       222        1.
 $         6       111        1.
+$ *BOUNDARY_CONVECTION_SET
+$ $#    ssid    pserod      
+$          1         0
+$ $#   hlcid     hmult     tlcid     tmult       loc   
+$          0       1e8         0   &temp_0         0
 *DEFINE_CURVE
 111
 0.0, &temp_0
-0.05, 380
-0.1, &temp_0
+0.5, 315
+&endtim, &temp_0
+*DEFINE_CURVE
+222
+0.0, &temp_0
+0.5, 300
 &endtim, &temp_0
 $ @380K thermal strain [0.00135376 0.00135376 0.00135376 0.         0.         0.        ]
 *INCLUDE
