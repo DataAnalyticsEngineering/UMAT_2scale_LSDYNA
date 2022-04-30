@@ -70,6 +70,7 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       ! if (.not. ((tt > 0) .and. (dt1 > 0))) then
       ! hsv(1:43) = ieee_value(1., ieee_quiet_nan)
       hsv(1) = temper
+      hsv(51:56) = eps(1:6)
       return
    end if
 
@@ -96,35 +97,41 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       ierror = args%setitem(1, cm(8)) ! mat_id
       ierror = args%setitem(2, temper)
       ierror = args%setitem(3, temper - hsv(1))
-
       do idx = 1, 6
+         ! previous_therma_strain
          ierror = args%setitem(idx + 3, hsv(idx + 37))
       end do
 
       do idx = 1, 6
-         ierror = args%setitem(idx + 9, eps(idx))
+         ! macro_strain_increment
+         ierror = args%setitem(idx + 9, eps(idx) + hsv(idx + 50))
+         ! ierror = args%setitem(idx + 9, eps(idx))
       end do
 
       ierror = call_py(return_value, py_module, "rve_solver_factory", args)
 
       ierror = cast(output_list, return_value)
       do idx = 1, 6
+         ! stress
          ierror = output_list%getitem(item, idx - 1)
          ierror = cast(stress(idx), item)
          call item%destroy
       end do
-      do idx = 2, 37
-         ierror = output_list%getitem(item, idx + 4)
-         ierror = cast(hsv(idx), item)
+      do idx = 1, 36
+         ! stiffness
+         ierror = output_list%getitem(item, idx + 5)
+         ierror = cast(hsv(idx + 1), item)
          call item%destroy
       end do
-      do idx = 38, 43
-         ierror = output_list%getitem(item, idx + 4)
-         ierror = cast(hsv(idx), item)
+      do idx = 1, 6
+         ! thermal_strain
+         ierror = output_list%getitem(item, idx + 41)
+         ierror = cast(hsv(idx + 37), item)
          call item%destroy
       end do
 
-      sig(1:6) = sig(1:6) + stress(1:6)
+      sig(1:6) = stress(1:6)
+      ! sig(1:6) = sig(1:6) + stress(1:6)
       ! hsv(2:37) = pack(stiffness, .true.)
 
    else
@@ -153,6 +160,7 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    end if
 
    hsv(1) = temper
+   hsv(51:56) = hsv(51:56) + eps(1:6)
 
    call args%destroy
    call py_module%destroy

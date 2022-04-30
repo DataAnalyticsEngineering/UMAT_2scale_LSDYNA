@@ -66,7 +66,8 @@ def rve_solver_factory(*args):
             # Voigt -> Mandel notation
             macro_strain[3:] = macro_strain[3:] / sqrt2
 
-            stress = stiffness @ (macro_strain - (thermal_strain - previous_therma_strain))
+            # stress = stiffness @ (macro_strain - (thermal_strain - previous_therma_strain))
+            stress = stiffness @ (macro_strain - thermal_strain)
             # TODO previous_therma_strain should be updated only after convergence
             # stress2 = stiffness @ macro_strain
 
