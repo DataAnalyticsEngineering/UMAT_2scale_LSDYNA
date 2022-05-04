@@ -4,106 +4,158 @@
 #include <stdexcept>
 // https://github.com/mileschen360/ezh5
 #include "ezh5/ezh5.hpp"
+#include "../mixed_languages/Eigen/Dense"
 
-extern "C" {
-void umat_cpp_thermal_(const double& mat_id,
-                       const double& temperature,
-                       double& c1,
-                       double& c2,
-                       double& c3,
-                       double& cvl);
-}
+Eigen::VectorXd I2{{1., 1., 1., 0, 0, 0}};
+auto I4 = Eigen::MatrixXd::Identity(6, 6);
+auto IxI = I2 * I2.transpose();
+auto P1 = IxI / 3.0;
+auto P2 = I4 - P1;
+auto sqrt2 = sqrt(2);
 
-void umat_cpp_thermal_(const double& mat_id,
-                       const double& temperature,
-                       double& c1,
-                       double& c2,
-                       double& c3,
-                       double& cvl)
+enum class material_id { copper, tungsten, rve };
+
+double min_temperature = 293.15;
+double max_temperature = 1300;
+
+double limit_temperature_2minmax(const double temperature)
 {
-    if (int(mat_id) == 0)
-    {
-        // auto density = [&temperature]() { return 8.93300e-06; };
-        auto thermal_conductivity = 4.20749e+05 - 6.84915e+01 * temperature;
-        auto heat_capacity = 3.16246e+08 + 3.17858e+05 * temperature
-                             - 3.49795e+02 * pow(temperature, 2) + 1.66327e-01 * pow(temperature, 3);
-        auto density = 8.93300e-06;
-        auto poisson_ratio = 3.40000e-01;
-        auto cte = 1.28170e-05 + 8.23091e-09 * temperature;
-        auto elastic_modulus = std::max(6.4126e+05,
-                                        1.35742e+08 + 5.85757e+03 * temperature
-                                            - 8.16134e+01 * pow(temperature, 2));
-
-        c1 = c2 = c3 = thermal_conductivity;
-        cvl = heat_capacity;
-    }
-    else
-    {
-        auto thermal_conductivity = 2.19308e+05 - 1.87425e+02 * temperature
-                                    + 1.05157e-01 * pow(temperature, 2)
-                                    - 2.01180e-05 * pow(temperature, 3);
-        auto heat_capacity = 1.23958e+08 + 3.44414e+04 * temperature
-                             - 1.25514e+01 * pow(temperature, 2) + 2.87070e-03 * pow(temperature, 3);
-        auto density = 1.93000e-05;
-        auto poisson_ratio = 2.80000e-01;
-        auto cte = 5.07893e-06 + 5.67524e-10 * temperature;
-        auto elastic_modulus = 4.13295e+08 - 7.83159e+03 * temperature
-                               - 3.65909e+01 * pow(temperature, 2)
-                               + 5.48782e-03 * pow(temperature, 3);
-
-        c1 = c2 = c3 = thermal_conductivity;
-        cvl = heat_capacity;
-    }
+    if (temperature < min_temperature)
+        return min_temperature;
+    else if (temperature > max_temperature)
+        return max_temperature;
+    return temperature;
 }
 
-extern "C" {
-void umat_cpp_mechanical_(const double& mat_id,
-                          const double& temperature,
-                          const double& d_temperature,
-                          double& strain,
-                          double& stress,
-                          double& stiffness);
-}
+typedef double (*func)(double);
 
-void umat_cpp_mechanical_(const double& mat_id,
-                          const double& temperature,
-                          const double& d_temperature,
-                          double& strain,
-                          double& stress,
-                          double& stiffness)
+class material
 {
-    throw std::runtime_error("umat_cpp_mechanical_ is not implemented yet!");
+public:
+    func elastic_modulus;
+    func poisson_ratio;
+    func conductivity;
+    func heat_capacity;
+    func thermal_strain;
+    func cte;
+    func hardening;
+    func yield;
 
-    if (int(mat_id) == 0)
+    material(material_id mat_id)
     {
-        auto density = 8.93300e-06;
-        auto poisson_ratio = 3.40000e-01;
-        auto cte = 1.28170e-05 + 8.23091e-09 * temperature;
-        auto elastic_modulus = std::max(6.4126e+05,
-                                        1.35742e+08 + 5.85757e+03 * temperature
-                                            - 8.16134e+01 * pow(temperature, 2));
+        if (mat_id == material_id::copper)
+        {
+            poisson_ratio = [](double x) { return 3.40000e-01; };
+            conductivity = [](double x) { return 4.20749e+05 + -6.84915e+01 * x; };
+            heat_capacity = [](double x) { return 2.94929e+03 + 2.30217e+00 * x + -2.95302e-03 * pow(x, 2) + 1.47057e-06 * pow(x, 3); };
+            elastic_modulus = [](double x) { return 1.35742e+08 + 5.85757e+03 * x + -8.16134e+01 * pow(x, 2); };
+            cte = [](double x) { return 1.28170e-05 + 8.23091e-09 * x; };
+            thermal_strain = [](double x) { return (1.28170e-05 * x + 8.23091e-09 * pow(x, 2) / 2) - (1.28170e-05 * min_temperature + 8.23091e-09 * pow(min_temperature, 2) / 2); };
+            yield = [](double x) { return (x < 1000) ? 1.12133e+02 * x + 3.49810e+04 + 1.53393e+05 * tanh((x / 1000 + -6.35754e-01) / -2.06958e-01) : 1200.0; };
+            hardening = [](double x) { return 20e6; };
+        }
+        else if (mat_id == material_id::tungsten)
+        {
+            poisson_ratio = [](double x) { return 2.80000e-01; };
+            conductivity = [](double x) { return 2.19308e+05 + -1.87425e+02 * x + 1.05157e-01 * pow(x, 2) + -2.01180e-05 * pow(x, 3); };
+            heat_capacity = [](double x) { return 2.39247e+03 + 6.62775e-01 * x + -2.80323e-04 * pow(x, 2) + 6.39511e-08 * pow(x, 3); };
+            elastic_modulus = [](double x) { return 4.13295e+08 + -7.83159e+03 * x + -3.65909e+01 * pow(x, 2) + 5.48782e-03 * pow(x, 3); };
+            cte = [](double x) { return 5.07893e-06 + 5.67524e-10 * x; };
+            thermal_strain = [](double x) { return (5.07893e-06 * x + 5.67524e-10 * pow(x, 2) / 2) - (5.07893e-06 * min_temperature + 5.67524e-10 * pow(min_temperature, 2) / 2); };
+            yield = [](double x) { return 1e20; };
+            hardening = [](double x) { return 1e20; };
+        }
     }
-    else
+
+    auto shear_modulus(double temperature) { return elastic_modulus(temperature) / (2. * (1. + poisson_ratio(temperature))); }
+    auto bulk_modulus(double temperature) { return elastic_modulus(temperature) / (3. * (1. - 2. * poisson_ratio(temperature))); }
+    auto get_stiffness(double temperature) { return bulk_modulus(temperature) * IxI + 2. * shear_modulus(temperature) * P2; }
+};
+
+extern "C" void umat_cpp_mechanical_(const double& mat_id,
+                                     const double& temper,
+                                     const double& d_temperature,
+                                     double& strain,
+                                     double* stress,
+                                     double* tangent_stiffness,
+                                     const double& elastic_flag,
+                                     double* plastic_strain,
+                                     double& hardening_q)
+{
+    double temperature = limit_temperature_2minmax(temper);
+
+    auto mat = material(material_id(int(mat_id))); // TODO pass mat_id as integer?
+    Eigen::MatrixXd stiffness = mat.get_stiffness(temperature);
+    auto thermal_strain = mat.thermal_strain(temperature) * I2;
+
+    using Eigen::placeholders::all;
+    using Eigen::placeholders::last;
+
+    Eigen::Map<Eigen::VectorXd> strain_mandel(&strain, 6);
+    Eigen::Map<Eigen::VectorXd> plastic_strain_mandel(plastic_strain, 6);
+    strain_mandel(Eigen::seq(3, last)) = strain_mandel(Eigen::seq(3, last)) / sqrt2;
+    plastic_strain_mandel(Eigen::seq(3, last)) = plastic_strain_mandel(Eigen::seq(3, last)) / sqrt2;
+
+    Eigen::VectorXd stress_mandel = stiffness * (strain_mandel - plastic_strain_mandel - thermal_strain);
+
+    // if (int(elastic_flag) == 0) // elastic material model
+    if (int(elastic_flag) == 1) // plastic material model with linear isotropic hardening and no viscous effects
     {
-        auto density = 1.93000e-05;
-        auto poisson_ratio = 2.80000e-01;
-        auto cte = 5.07893e-06 + 5.67524e-10 * temperature;
-        auto elastic_modulus = 4.13295e+08 - 7.83159e+03 * temperature
-                               - 3.65909e+01 * pow(temperature, 2)
-                               + 5.48782e-03 * pow(temperature, 3);
+        auto dev_stress = P2 * stress_mandel;
+        auto norm_dev = dev_stress.squaredNorm();
+        if (norm_dev > 0)
+        {
+            auto dev_normal = dev_stress / norm_dev;
+            auto yield_stress = [mat, temperature](double hardening_q) { return mat.yield(temperature) + mat.hardening(temperature) * hardening_q; };
+            auto evaluate_yield_function = [mat, temperature, yield_stress](double x, double hardening_q) { return x - sqrt(2.0 / 3.0) * yield_stress(hardening_q); };
+            auto trial_yield_func = evaluate_yield_function(norm_dev, hardening_q);
+            if (trial_yield_func > 0)
+            {
+                // std::cout << "plastic" << '\n';
+                // std::cout << trial_yield_func << '\n';
+                double d_lambda = trial_yield_func / (2 * mat.shear_modulus(temperature) + 2. / 3. * mat.hardening(temperature));
+                plastic_strain_mandel += d_lambda * dev_normal;
+                hardening_q += sqrt(2.0 / 3.0) * d_lambda;
+                stress_mandel = stiffness * (strain_mandel - plastic_strain_mandel - thermal_strain);
+                stiffness = stiffness - (4 * pow(mat.shear_modulus(temperature), 2) * (dev_normal * dev_normal.transpose()) / (2 * mat.shear_modulus(temperature) + 2. / 3. * yield_stress(hardening_q)))
+                            - (4 * pow(mat.shear_modulus(temperature), 2) * d_lambda / norm_dev * (P2 - dev_normal * dev_normal.transpose()));
+            }
+            if (trial_yield_func == 0)
+            {
+                double d_lambda = trial_yield_func / (2 * mat.shear_modulus(temperature));
+                plastic_strain_mandel += d_lambda * dev_normal;
+                hardening_q += sqrt(2.0 / 3.0) * d_lambda;
+                stress_mandel = stiffness * (strain_mandel - plastic_strain_mandel - thermal_strain);
+                stiffness = stiffness - (4 * pow(mat.shear_modulus(temperature), 2) * (dev_normal * dev_normal.transpose()) / (2 * mat.shear_modulus(temperature) + 2. / 3. * yield_stress(hardening_q)))
+                            - (4 * pow(mat.shear_modulus(temperature), 2) * d_lambda / norm_dev * (P2 - dev_normal * dev_normal.transpose()));
+            }
+        }
     }
+
+    // Mandel -> Voigt notation
+    stress_mandel(Eigen::seq(3, last)) = stress_mandel(Eigen::seq(3, last)) / sqrt2;
+    stiffness(Eigen::seq(3, last), Eigen::seq(3, last)) = stiffness(Eigen::seq(3, last), Eigen::seq(3, last)) / 2;
+    stiffness(Eigen::seq(0, 3), Eigen::seq(3, last)) = stiffness(Eigen::seq(0, 3), Eigen::seq(3, last)) / sqrt2;
+    stiffness(Eigen::seq(3, last), Eigen::seq(0, 3)) = stiffness(Eigen::seq(3, last), Eigen::seq(0, 3)) / sqrt2;
+
+    Eigen::Map<Eigen::VectorXd>(plastic_strain, plastic_strain_mandel.size()) = plastic_strain_mandel; // no need to convert to Voigt notation, it's not used outside this function
+    Eigen::Map<Eigen::VectorXd>(stress, stress_mandel.size()) = stress_mandel;
+    Eigen::Map<Eigen::MatrixXd>(tangent_stiffness, stiffness.rows(), stiffness.cols()) = stiffness;
+}
+
+extern "C" void umat_cpp_thermal_(const double& mat_id, const double& temperature, double& c1, double& c2, double& c3, double& cvl)
+{
+    auto mat = material(material_id(int(mat_id))); // TODO pass mat_id as integer?
+    // Note: if iortho=0 in the material card in mat_44.k, the material is considered isotropic and only c1 is used
+    c1 = c2 = c3 = mat.conductivity(temperature);
+    cvl = mat.heat_capacity(temperature);
 }
 
 extern "C" {
-void umat_cpp_thermal_rve_(const double& temperature, double& c1, double& c2, double& c3, double& cvl);
-void umat_cpp_mechanical_rve_(const double& temperature,
-                              const double& d_temperature,
-                              double& strain,
-                              double& stress,
-                              double& stiffness);
+void umat_cpp_mechanical_rve_(const double& temperature, const double& d_temperature, double& strain, double& stress, double& stiffness);
 }
 
-void umat_cpp_thermal_rve_(const double& temperature, double& c1, double& c2, double& c3, double& cvl)
+extern "C" void umat_cpp_thermal_rve_(const double& temperature, double& c1, double& c2, double& c3, double& cvl)
 {
     throw std::runtime_error("umat_cpp_thermal_rve_ is not implemented yet!");
 

@@ -2,21 +2,11 @@
 #include <Python.h>
 
 extern "C" {
-void cppcallpython_thermal_(const double& mat_id,
-                            const double& temperature,
-                            double& c1,
-                            double& c2,
-                            double& c3,
-                            double& cvl);
+void cppcallpython_thermal_(const double& mat_id, const double& temperature, double& c1, double& c2, double& c3, double& cvl);
 }
 
 // C++ call Python module
-void cppcallpython_thermal_(const double& mat_id,
-                            const double& temperature,
-                            double& c1,
-                            double& c2,
-                            double& c3,
-                            double& cvl)
+void cppcallpython_thermal_(const double& mat_id, const double& temperature, double& c1, double& c2, double& c3, double& cvl)
 {
     // Python initialize
     Py_Initialize();
@@ -30,11 +20,7 @@ void cppcallpython_thermal_(const double& mat_id,
 
     // std::cout << mat_id << " " << temperature << std::endl;
     // PyObject_CallFunction(py_fun, NULL);
-    PyObject* output = PyObject_CallFunctionObjArgs(py_fun,
-                                                    PyFloat_FromDouble(0),
-                                                    PyFloat_FromDouble(mat_id),
-                                                    PyFloat_FromDouble(temperature),
-                                                    NULL);
+    PyObject* output = PyObject_CallFunctionObjArgs(py_fun, PyFloat_FromDouble(0), PyFloat_FromDouble(mat_id), PyFloat_FromDouble(temperature), NULL);
 
     // int size = Py_SIZE(output);
     // std::cout << "size " << size << std::endl;
@@ -51,21 +37,11 @@ void cppcallpython_thermal_(const double& mat_id,
 }
 
 extern "C" {
-void cppcallpython_mechanical_(const double& mat_id,
-                               const double& temperature,
-                               const double& d_temperature,
-                               double* strain,
-                               double* stress,
-                               double* stiffness);
+void cppcallpython_mechanical_(const double& mat_id, const double& temperature, const double& d_temperature, double* strain, double* stress, double* stiffness);
 }
 
 // C++ call Python module
-void cppcallpython_mechanical_(const double& mat_id,
-                               const double& temperature,
-                               const double& d_temperature,
-                               double* strain,
-                               double* stress,
-                               double* stiffness)
+void cppcallpython_mechanical_(const double& mat_id, const double& temperature, const double& d_temperature, double* strain, double* stress, double* stiffness)
 {
     // Python initialize
     Py_Initialize();

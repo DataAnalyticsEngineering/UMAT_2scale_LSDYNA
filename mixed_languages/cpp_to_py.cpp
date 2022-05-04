@@ -36,10 +36,7 @@ bool pywrapper_()
         return false;
     }
 
-    PyObject* args = PyTuple_Pack(3,
-                                  PyFloat_FromDouble(2.0),
-                                  PyFloat_FromDouble(4.0),
-                                  PyUnicode_FromString((char*)"Greg"));
+    PyObject* args = PyTuple_Pack(3, PyFloat_FromDouble(2.0), PyFloat_FromDouble(4.0), PyUnicode_FromString((char*)"Greg"));
 
     // PyObject_CallFunction(py_fun, NULL);
     PyObject* res = PyObject_CallFunctionObjArgs(py_fun, args, NULL);

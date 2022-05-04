@@ -1,8 +1,8 @@
 ! TODO only forpy_interface.true. is updated so far
 ! Macro
-#define forpy_interface .true.
+#define forpy_interface .false.
 #define python_interface .false.
-#define cpp_interface .false.
+#define cpp_interface .true.
 
 ! *MAT_USER_DEFINED_MATERIAL_MODELS
 ! These are Material Types 41 - 50
@@ -52,6 +52,8 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    type(list) :: output_list
    type(object) :: item
    real*8 :: stress(6)
+   real*8 :: total_strain(6)
+   real*8 :: plastic_strain(6)
    integer idx
 
    if (etype .eq. 'shell') then
@@ -70,15 +72,18 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       ! if (.not. ((tt > 0) .and. (dt1 > 0))) then
       ! hsv(1:43) = ieee_value(1., ieee_quiet_nan)
       hsv(1) = temper
-      hsv(51:56) = eps(1:6)
+      hsv(51:56) = 0.0
+      hsv(61:66) = 0.0
       return
    end if
 
    if (cpp_interface) then
-
-      call umat_cpp_mechanical(cm(8), temper, temper, eps, stress, hsv(2:37))
-      sig(1:6) = sig(1:6) + stress(1:6)
-      stop "Not implemented"
+      do idx = 1, 6
+         ! total macro_strain_increment
+         total_strain(idx) = eps(idx) + hsv(idx + 50)
+      end do
+      call umat_cpp_mechanical(cm(8), temper, temper - hsv(1), total_strain, stress, hsv(2:37), cm(7), plastic_strain, epsp)
+      sig(1:6) = stress(1:6)
 
    elseif (python_interface) then
 
@@ -99,7 +104,7 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       ierror = args%setitem(3, temper - hsv(1))
       do idx = 1, 6
          ! previous_therma_strain
-         ierror = args%setitem(idx + 3, hsv(idx + 37))
+         ierror = args%setitem(idx + 3, hsv(idx + 37)) !// TODO not used del
       end do
 
       do idx = 1, 6
@@ -161,6 +166,7 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
 
    hsv(1) = temper
    hsv(51:56) = hsv(51:56) + eps(1:6)
+   hsv(61:66) = hsv(61:66) + plastic_strain(1:6)
 
    call args%destroy
    call py_module%destroy
