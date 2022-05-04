@@ -13,26 +13,26 @@
       . zrb(*),axrb(*),ayrb(*),azrb(*),rba(6,*),fvalnew(*),
       . fvalold(*),fvalmid(*),fvalnxt(*)
        real*8 ut(3,*),ur(3,*)
-+      include 'nlqparm'
-+      include 'nhisparm.inc'
-+      include 'rve/daeblk.f'
++      !include 'nlqparm'
++      !include 'nhisparm.inc'
++      !include 'rve/daeblk.f'
 +      if (time>=endtim) then
 +        call forpy_finalize
-+        ! voids are not handeled here
-+        vol_av_sig = vol_av_sig / weights
-+        vol_av_flux = vol_av_flux / weights
-+        ! open(91, file = 'dae_rve.txt',status="unknown",action="write")
-+        write(*,*) '--------------------------'
-+        write(*,*) 'weights', weights
-+        write(*,*) 'stress(xx,yy,zz,xy,yz,xz), flux(x,y,z)'
-+        write(*,'(6(ES11.4,3x))') vol_av_sig
-+        write(*,'(3(ES11.4,3x))') vol_av_flux
-+        write(*,*) '--------------------------'
++        !! voids are not handeled here
++        ! vol_av_sig = vol_av_sig / weights
++        ! vol_av_flux = vol_av_flux / weights
++        !! open(91, file = 'dae_rve.txt',status="unknown",action="write")
++        !write(*,*) '--------------------------'
++        !write(*,*) 'weights', weights
++        !write(*,*) 'stress(xx,yy,zz,xy,yz,xz), flux(x,y,z)'
++        !write(*,'(6(ES11.4,3x))') vol_av_sig
++        !write(*,'(3(ES11.4,3x))') vol_av_flux
++        !write(*,*) '--------------------------'
 +      endif
-+      last_cycle=0
-+      weights=0.0
-+      vol_av_sig(:)=0.0
-+      vol_av_flux(:)=0.0
++      !last_cycle=0
++      !weights=0.0
++      !vol_av_sig(:)=0.0
++      !vol_av_flux(:)=0.0
  c
  c     MPP special variables
  c

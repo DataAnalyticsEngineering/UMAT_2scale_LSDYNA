@@ -44,33 +44,33 @@ cd $folder
 if [[ "$mode" != "debug" ]] && [[ "$mode" != "d" ]]; then    
 
   # patch files generated with diff -u old new > ***.patch
-  # function defined in .env file
+  # function defined in set_env.sh file
+
+  # call forpy_initialize and forpy_finalize only once
+  patch < init_dyn21.f.patch
+  patch < dyn21.f.patch
 
   # compiler options
   patch < Makefile.patch
 
-  # subroutine umat43 & subroutine umat44 
+  # change Fortran comments from `c` to `!` in order to include in .f90 files
+  patch < nhisparm.inc.patch
+  
+  # comment subroutine umat43 & subroutine umat44 
   patch < dyn21umats.f.patch
 
-  # subroutine umat43v & subroutine umat44v
+  # comment subroutine umat43v & subroutine umat44v
   patch < dyn21umatv.f.patch
 
-  # subroutine utan43 & subroutine utan43v
+  # comment subroutine utan43, utan43v, utan44, utan44v
   # also fixes a BUG in dyn21utan -> urtanh -> aux33loc
   patch < dyn21utan.f.patch
 
-  # subroutine thumat13 & subroutine thumat14
+  # comment subroutine thumat13 & subroutine thumat14
   patch < dyn21tumat.f.patch
-
-  # change Fortran comments from `c` to `!` in order to include in .f90 files
-  patch < nhisparm.inc.patch
-
-  # call forpy_initialize and forpy_finalize only once
-  patch < dyn21.f.patch
-  patch < init_dyn21.f.patch
-
-  # dae_rve
-  patch < dyn21umat.f.patch
+  
+  # dae_rve [discontinued]
+  # patch < dyn21umat.f.patch
 
   rm -rf *.patch
 
