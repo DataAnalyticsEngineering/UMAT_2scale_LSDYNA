@@ -28,6 +28,7 @@ double limit_temperature_2minmax(const double temperature)
 }
 
 typedef double (*func)(double);
+typedef double (*func_2inputs)(double, double);
 
 class material
 {
@@ -36,7 +37,7 @@ public:
     func poisson_ratio;
     func conductivity;
     func heat_capacity;
-    func thermal_strain;
+    func_2inputs thermal_strain;
     func cte;
     func hardening;
     func yield;
@@ -50,7 +51,7 @@ public:
             heat_capacity = [](double x) { return 2.94929e+03 + 2.30217e+00 * x + -2.95302e-03 * pow(x, 2) + 1.47057e-06 * pow(x, 3); };
             elastic_modulus = [](double x) { return 1.35742e+08 + 5.85757e+03 * x + -8.16134e+01 * pow(x, 2); };
             cte = [](double x) { return 1.28170e-05 + 8.23091e-09 * x; };
-            thermal_strain = [](double x) { return (1.28170e-05 * x + 8.23091e-09 * pow(x, 2) / 2) - (1.28170e-05 * min_temperature + 8.23091e-09 * pow(min_temperature, 2) / 2); };
+            thermal_strain = [](double x, double ref_temp) { return (1.28170e-05 * x + 8.23091e-09 * pow(x, 2) / 2) - (1.28170e-05 * ref_temp + 8.23091e-09 * pow(ref_temp, 2) / 2); };
             yield = [](double x) { return (x < 1000) ? 1.12133e+02 * x + 3.49810e+04 + 1.53393e+05 * tanh((x / 1000 + -6.35754e-01) / -2.06958e-01) : 1200.0; };
             hardening = [](double x) { return 20e6; };
         }
@@ -61,7 +62,7 @@ public:
             heat_capacity = [](double x) { return 2.39247e+03 + 6.62775e-01 * x + -2.80323e-04 * pow(x, 2) + 6.39511e-08 * pow(x, 3); };
             elastic_modulus = [](double x) { return 4.13295e+08 + -7.83159e+03 * x + -3.65909e+01 * pow(x, 2) + 5.48782e-03 * pow(x, 3); };
             cte = [](double x) { return 5.07893e-06 + 5.67524e-10 * x; };
-            thermal_strain = [](double x) { return (5.07893e-06 * x + 5.67524e-10 * pow(x, 2) / 2) - (5.07893e-06 * min_temperature + 5.67524e-10 * pow(min_temperature, 2) / 2); };
+            thermal_strain = [](double x, double ref_temp) { return (5.07893e-06 * x + 5.67524e-10 * pow(x, 2) / 2) - (5.07893e-06 * ref_temp + 5.67524e-10 * pow(ref_temp, 2) / 2); };
             yield = [](double x) { return 1e20; };
             hardening = [](double x) { return 1e20; };
         }
@@ -75,26 +76,27 @@ public:
 extern "C" void umat_cpp_mechanical_(const double& mat_id,
                                      const double& temper,
                                      const double& d_temperature,
-                                     double& strain,
+                                     const double* strain_in,
                                      double* stress,
                                      double* tangent_stiffness,
                                      const double& elastic_flag,
                                      double* plastic_strain,
-                                     double& hardening_q)
+                                     double& hardening_q,
+                                     double* thermal_strain_hsv,
+                                     const double& ref_temp)
 {
     double temperature = limit_temperature_2minmax(temper);
 
     auto mat = material(material_id(int(mat_id))); // TODO pass mat_id as integer?
     Eigen::MatrixXd stiffness = mat.get_stiffness(temperature);
-    auto thermal_strain = mat.thermal_strain(temperature) * I2;
+    auto thermal_strain = mat.thermal_strain(temperature, ref_temp) * I2;
 
-    using Eigen::placeholders::all;
-    using Eigen::placeholders::last;
+    using Eigen::seq;
 
-    Eigen::Map<Eigen::VectorXd> strain_mandel(&strain, 6);
+    Eigen::Map<const Eigen::VectorXd> strain(strain_in, 6);
+    Eigen::VectorXd strain_mandel = strain;
     Eigen::Map<Eigen::VectorXd> plastic_strain_mandel(plastic_strain, 6);
-    strain_mandel(Eigen::seq(3, last)) = strain_mandel(Eigen::seq(3, last)) / sqrt2;
-    plastic_strain_mandel(Eigen::seq(3, last)) = plastic_strain_mandel(Eigen::seq(3, last)) / sqrt2;
+    strain_mandel(seq(3, 5)) /= sqrt2;
 
     Eigen::VectorXd stress_mandel = stiffness * (strain_mandel - plastic_strain_mandel - thermal_strain);
 
@@ -102,7 +104,7 @@ extern "C" void umat_cpp_mechanical_(const double& mat_id,
     if (int(elastic_flag) == 1) // plastic material model with linear isotropic hardening and no viscous effects
     {
         auto dev_stress = P2 * stress_mandel;
-        auto norm_dev = dev_stress.squaredNorm();
+        auto norm_dev = dev_stress.norm();
         if (norm_dev > 0)
         {
             auto dev_normal = dev_stress / norm_dev;
@@ -133,12 +135,13 @@ extern "C" void umat_cpp_mechanical_(const double& mat_id,
     }
 
     // Mandel -> Voigt notation
-    stress_mandel(Eigen::seq(3, last)) = stress_mandel(Eigen::seq(3, last)) / sqrt2;
-    stiffness(Eigen::seq(3, last), Eigen::seq(3, last)) = stiffness(Eigen::seq(3, last), Eigen::seq(3, last)) / 2;
-    stiffness(Eigen::seq(0, 3), Eigen::seq(3, last)) = stiffness(Eigen::seq(0, 3), Eigen::seq(3, last)) / sqrt2;
-    stiffness(Eigen::seq(3, last), Eigen::seq(0, 3)) = stiffness(Eigen::seq(3, last), Eigen::seq(0, 3)) / sqrt2;
+    stress_mandel(seq(3, 5)) /= sqrt2;
+    stiffness(seq(3, 5), seq(3, 5)) /= 2;
+    stiffness(seq(0, 2), seq(3, 5)) /= sqrt2;
+    stiffness(seq(3, 5), seq(0, 2)) /= sqrt2;
 
-    Eigen::Map<Eigen::VectorXd>(plastic_strain, plastic_strain_mandel.size()) = plastic_strain_mandel; // no need to convert to Voigt notation, it's not used outside this function
+    Eigen::Map<Eigen::VectorXd>(thermal_strain_hsv, thermal_strain.size()) = thermal_strain;
+    Eigen::Map<Eigen::VectorXd>(plastic_strain, plastic_strain_mandel.size()) = plastic_strain_mandel;
     Eigen::Map<Eigen::VectorXd>(stress, stress_mandel.size()) = stress_mandel;
     Eigen::Map<Eigen::MatrixXd>(tangent_stiffness, stiffness.rows(), stiffness.cols()) = stiffness;
 }

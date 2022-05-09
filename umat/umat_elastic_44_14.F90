@@ -1,9 +1,3 @@
-! TODO only forpy_interface.true. is updated so far
-! Macro
-#define forpy_interface .false.
-#define python_interface .false.
-#define cpp_interface .true.
-
 ! *MAT_USER_DEFINED_MATERIAL_MODELS
 ! These are Material Types 41 - 50
 ! mid: A number between 41 and 50 must be chosen. TODO If MT < 0, subroutine rwumat in dyn21.f is
@@ -13,10 +7,11 @@
 ! itherm: element temperature -> if (ishrmp(mt).lt.0) then in dyn21umat.f
 ! ibulk: Address of bulk modulus in material constants array (use the maximum)
 ! ig: Address of shear modulus in material constants array (use the maximum)
+! ihyper: 10, enforces full integration of element -2
 ! $#     mid        ro        mt       lmc       nhv    iortho     ibulk        ig
 !          1    8933.0        44         8        40         0         4         3
 ! $#   ivect     ifail    itherm    ihyper      ieos      lmca    unused    unused
-!          0         0         1         0         0         0
+!          0         0         1        10         0         0
 ! $#      p1        p2        p3        p4        p5        p6        p7        p8
 !   128.85e9      0.34 4.808e+10 1.342e+11         0         0         0         0
 
@@ -52,48 +47,40 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    type(list) :: output_list
    type(object) :: item
    real*8 :: stress(6)
-   real*8 :: total_strain(6)
-   real*8 :: plastic_strain(6)
    integer idx
 
-   if (etype .eq. 'shell') then
-      ! xx,yy,zz,xy,yz,xz
-      ! plane strain
-      eps(3) = 0
-      eps(5) = 0
-      eps(6) = 0
-   end if
+   ! plane strain
+   ! if (etype .eq. 'shell') then
+   !    ! xx,yy,zz,xy,yz,xz
+   !    eps(3) = 0
+   !    eps(5) = 0
+   !    eps(6) = 0
+   ! end if
 
    ! if (sum(eps(1:6)) > 0) then
    !   write(*,'(6(ES11.4,3x))') eps(1:6)
    ! endif
 
    if (ncycle .eq. 0) then
-      ! if (.not. ((tt > 0) .and. (dt1 > 0))) then
-      ! hsv(1:43) = ieee_value(1., ieee_quiet_nan)
       hsv(1) = temper
-      hsv(51:56) = 0.0
-      hsv(61:66) = 0.0
+      hsv(2:70) = 0.0
+      hsv(70) = temper ! reference temperature for the thermal strain
       return
    end if
 
-   if (cpp_interface) then
-      do idx = 1, 6
-         ! total macro_strain_increment
-         total_strain(idx) = eps(idx) + hsv(idx + 50)
-      end do
-      call umat_cpp_mechanical(cm(8), temper, temper - hsv(1), total_strain, stress, hsv(2:37), cm(7), plastic_strain, epsp)
-      sig(1:6) = stress(1:6)
+   do idx = 1, 6
+      hsv(idx + 50) = hsv(idx + 50) + eps(idx)
+   end do
 
-   elseif (python_interface) then
+   if (int(cm(6)) == 0) then
+  call umat_cpp_mechanical(cm(8), temper, temper - hsv(1), hsv(51:56), sig, hsv(2:37), cm(7), hsv(61:66), epsp, hsv(38:43), hsv(70))
+
+   elseif (int(cm(6)) == 1) then
 
       call cppcallpython_mechanical(cm(8), temper, temper, eps, stress, hsv(2:37))
       sig(1:6) = sig(1:6) + stress(1:6)
 
-      ! write(*,*) stress
-      ! write(*,*) hsv(2)
-      ! stop "message"
-   else if (forpy_interface) then
+   elseif (int(cm(6)) == 2) then
 
       ierror = import_py(py_module, "umat")
 
@@ -102,41 +89,33 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       ierror = args%setitem(1, cm(8)) ! mat_id
       ierror = args%setitem(2, temper)
       ierror = args%setitem(3, temper - hsv(1))
-      do idx = 1, 6
-         ! previous_therma_strain
-         ierror = args%setitem(idx + 3, hsv(idx + 37)) !// TODO not used del
+      do idx = 1, 6 ! previous_therma_strain
+         ierror = args%setitem(idx + 3, hsv(idx + 37))
       end do
 
       do idx = 1, 6
-         ! macro_strain_increment
-         ierror = args%setitem(idx + 9, eps(idx) + hsv(idx + 50))
-         ! ierror = args%setitem(idx + 9, eps(idx))
+         ierror = args%setitem(idx + 9, hsv(idx + 50))
       end do
 
       ierror = call_py(return_value, py_module, "rve_solver_factory", args)
 
       ierror = cast(output_list, return_value)
-      do idx = 1, 6
-         ! stress
+      do idx = 1, 6 ! stress
          ierror = output_list%getitem(item, idx - 1)
-         ierror = cast(stress(idx), item)
+         ierror = cast(sig(idx), item)
          call item%destroy
       end do
-      do idx = 1, 36
-         ! stiffness
+      do idx = 1, 36 ! stiffness
          ierror = output_list%getitem(item, idx + 5)
          ierror = cast(hsv(idx + 1), item)
          call item%destroy
       end do
-      do idx = 1, 6
-         ! thermal_strain
+      do idx = 1, 6 ! thermal_strain
          ierror = output_list%getitem(item, idx + 41)
          ierror = cast(hsv(idx + 37), item)
          call item%destroy
       end do
 
-      sig(1:6) = stress(1:6)
-      ! sig(1:6) = sig(1:6) + stress(1:6)
       ! hsv(2:37) = pack(stiffness, .true.)
 
    else
@@ -165,8 +144,12 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    end if
 
    hsv(1) = temper
-   hsv(51:56) = hsv(51:56) + eps(1:6)
-   hsv(61:66) = hsv(61:66) + plastic_strain(1:6)
+
+   ! write (*, '(6(ES11.4,3x))') hsv(1:66)
+   ! write (*, *) "------------"
+   ! write (*, '(6(ES11.4,3x))') hsv(51:56)
+   ! write (*, '(6(ES11.4,3x))') hsv(61:66)
+   ! stop "message"
 
    call args%destroy
    call py_module%destroy
@@ -221,19 +204,17 @@ subroutine thumat14(c1, c2, c3, cvl, dcvdtl, hsrcl, dhsrcdtl, hsv, hsvm, nmecon,
    type(list) :: output_list
    type(object) :: item0, item1, item2, item3
 
-   if (cpp_interface) then
+   if (int(r_matp(8 + 6)) == 0) then
 
       call umat_cpp_thermal(r_matp(8 + 8), temp, c1, c2, c3, cvl)
-
       ihsrcl = 0
 
-   elseif (python_interface) then
+   elseif (int(r_matp(8 + 6)) == 1) then
 
       call cppcallpython_thermal(r_matp(8 + 8), temp, c1, c2, c3, cvl)
-
       ihsrcl = 0 !1 if heat source is to be taken into account for this material
 
-   elseif (forpy_interface) then
+   elseif (int(r_matp(8 + 6)) == 2) then
 
       ierror = import_py(py_module, "umat")
 
