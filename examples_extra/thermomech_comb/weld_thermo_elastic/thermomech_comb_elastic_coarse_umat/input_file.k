@@ -114,7 +114,7 @@ $#      tx        ty        tz
        0.0       0.0      -1.0
 *SECTION_SOLID
 $#   secid    elform       aet    unused    unused    unused    cohoff   gaskeit
-         1         2         0                                     0.0          
+         1        -2         0                                     0.0          
 *PART
 $#                                                                         title
 substrate

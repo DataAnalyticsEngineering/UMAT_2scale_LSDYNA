@@ -64,10 +64,10 @@ $#      ts       tip       its      tmin      tmax     dtemp      tscp      lcts
          1       1.0      &dt0    &dtmin    &dtmax    0100.0       0.5         0
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-        50
+        15
 *DATABASE_EXTENT_BINARY
 $#   neiph     neips    maxint    strflg    sigflg    epsflg    rltflg    engflg
-        14        14         3       111         1         1         1         1
+        70        70         3       111         1         1         1         1
 $#  cmpflg    ieverp    beamip     dcomp      shge     stssz    n3thdt   ialemat
          0         0         0         1         1         1         2         1
 $# nintsld   pkp_sen      sclp     hydro     msscl     therm    intout    nodout
