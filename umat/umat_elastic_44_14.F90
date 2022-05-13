@@ -62,18 +62,17 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
    ! endif
 
    if (ncycle .eq. 0) then
-      hsv(1) = temper
+      hsv(1) = temper ! reference temperature for the thermal strain
       hsv(2:70) = 0.0
-      hsv(70) = temper ! reference temperature for the thermal strain
       return
    end if
 
    do idx = 1, 6
-      hsv(idx + 50) = hsv(idx + 50) + eps(idx)
+      hsv(idx + 40) = hsv(idx + 40) + eps(idx)
    end do
 
    if (int(cm(6)) == 0) then
-  call umat_cpp_mechanical(cm(8), temper, temper - hsv(1), hsv(51:56), sig, hsv(2:37), cm(7), hsv(61:66), epsp, hsv(38:43), hsv(70))
+     call umat_cpp_mechanical(cm(7), cm(8), cm(9), cm(10), temper, hsv(2:37), sig, hsv(41:46), hsv(51:56), hsv(61:66), epsp, hsv(1))
 
    elseif (int(cm(6)) == 1) then
 
@@ -142,14 +141,6 @@ subroutine umat44(cm, eps, sig, epsp, hsv, dt1, capa, etype, tt, temper, failel,
       hsv(2:37) = pack(asarray(voigt(C0), 6, 6), .true.)
 
    end if
-
-   hsv(1) = temper
-
-   ! write (*, '(6(ES11.4,3x))') hsv(1:66)
-   ! write (*, *) "------------"
-   ! write (*, '(6(ES11.4,3x))') hsv(51:56)
-   ! write (*, '(6(ES11.4,3x))') hsv(61:66)
-   ! stop "message"
 
    call args%destroy
    call py_module%destroy
