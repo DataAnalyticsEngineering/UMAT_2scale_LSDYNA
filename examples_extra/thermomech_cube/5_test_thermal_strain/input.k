@@ -5,9 +5,9 @@ Rtemp_0, 293.15
 Rdtmin, 0.01
 Rdtmax, 0.01
 Rdt0, 0.01
-*CONTROL_ACCURACY
-$#     osu       inn    pidosu      iacc    
-1,,,1
+$ *CONTROL_ACCURACY
+$ $#     osu       inn    pidosu      iacc    
+$ 1,,,1
 *CONTROL_IMPLICIT_AUTO
 $# 2 auto, 0 fixed
 $#   iauto    iteopt    itewin     dtmin     dtmax     dtexp     kfail    kcycle

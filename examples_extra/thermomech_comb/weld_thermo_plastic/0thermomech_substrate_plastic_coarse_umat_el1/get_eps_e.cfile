@@ -1,0 +1,5 @@
+fringe 1061
+pfringe
+fringevariable add a "history var#41" 1041 1 0 0 -1 0 0 0
+fringevariable add b "history var#61" 1061 1 0 0 -1 0 0 0
+fringevariable fringe "a-b"

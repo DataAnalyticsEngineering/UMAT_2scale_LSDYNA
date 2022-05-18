@@ -13,18 +13,19 @@ $ solver -> 12
 $ tlstart     tlend    of the material
 *KEYWORD
 *PARAMETER
-Rendtim, 900.0
+Rendtim, 600.0
 Rcuttim, 999
 Rcuttim2, 999
 Rpower, 0.56e9
 Rdepth, 0.3
 Rradius, 0.95
-Rtemp_0, 673.15
+Rtemp_0, 293.15
+Rtemp_1, 673.15
 Rf_f, 1.0
 Rn, 3
 Rdtmin, 1e-12
 Rdtmax, 50
-Rdt0, 1e-12
+Rdt0, 0.1
 *PARAMETER_EXPRESSION
 Rf_r, 2-f_f
 $ *CONTROL_ACCURACY
@@ -64,10 +65,10 @@ $#      ts       tip       its      tmin      tmax     dtemp      tscp      lcts
          1       1.0      &dt0    &dtmin    &dtmax    0100.0       0.5         0
 *DATABASE_BINARY_D3PLOT
 $#      dt      lcdt      beam     npltc    psetid      
-        15
+        05
 *DATABASE_EXTENT_BINARY
 $#   neiph     neips    maxint    strflg    sigflg    epsflg    rltflg    engflg
-        70        70         3       111         1         1         1         1
+        70        70                 111         1         1         1         1
 $#  cmpflg    ieverp    beamip     dcomp      shge     stssz    n3thdt   ialemat
          0         0         0         1         1         1         2         1
 $# nintsld   pkp_sen      sclp     hydro     msscl     therm    intout    nodout
@@ -77,6 +78,8 @@ $#    dtdt    resplt     neipb     quadr     cubic
 *INITIAL_TEMPERATURE_SET
 $#    nsid      temp       loc   
          0   &temp_0         0
+*BOUNDARY_TEMPERATURE_SET
+         6        11        1.                 1.1
 *BOUNDARY_CONVECTION_SET
 $#    ssid    pserod      
          1         0
@@ -93,15 +96,15 @@ $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
          3         0         0         1         0         0         0         0
 $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
          4         0         0         0         1         0         0         0
-*BOUNDARY_SPC_SET_BIRTH_DEATH
-$#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
-         5         0         1         0         0         0         0         0
-$#   birth     death
-   &cuttim   &endtim
-*DEFINE_ELEMENT_DEATH_SOLID_SET
-$#     sid      time     boxid     inout     idgrp       cid   percent       
-         1   &cuttim         0         0         0         0       0.0
-         2  &cuttim2         0         0         0         0       0.0
+$ *BOUNDARY_SPC_SET_BIRTH_DEATH
+$ $#    nsid       cid      dofx      dofy      dofz     dofrx     dofry     dofrz
+$          5         0         1         0         0         0         0         0
+$ $#   birth     death
+$    &cuttim   &endtim
+$ *DEFINE_ELEMENT_DEATH_SOLID_SET
+$ $#     sid      time     boxid     inout     idgrp       cid   percent       
+$          1   &cuttim         0         0         0         0       0.0
+$          2  &cuttim2         0         0         0         0       0.0
 $ *BOUNDARY_RADIATION_SET
 $ $     ssid      type
 $          3         1
@@ -118,7 +121,7 @@ $#      tx        ty        tz
        0.0       0.0      -1.0
 *SECTION_SOLID
 $#   secid    elform       aet    unused    unused    unused    cohoff   gaskeit
-         1         2         0                                     0.0          
+         1         1         0                                     0.0          
 *PART
 $#                                                                         title
 substrate

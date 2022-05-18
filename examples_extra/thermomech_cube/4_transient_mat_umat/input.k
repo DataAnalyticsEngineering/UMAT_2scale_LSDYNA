@@ -5,9 +5,9 @@ Rtemp_0, 293.15
 Rdtmin, 0.01
 Rdtmax, 0.01
 Rdt0, 0.01
-*CONTROL_ACCURACY
-$#     osu       inn    pidosu      iacc    
-1,,,1
+$ *CONTROL_ACCURACY
+$ $#     osu       inn    pidosu      iacc    
+$          1                             1
 *CONTROL_IMPLICIT_AUTO
 $# 2 auto, 0 fixed
 $#   iauto    iteopt    itewin     dtmin     dtmax     dtexp     kfail    kcycle
@@ -22,11 +22,16 @@ $#  nsolvr    ilimit    maxref     dctol     ectol     rctol     lstol    abstol
 $# nlprint: output solver satus ...
 $#   dnorm    diverg     istif   nlprint    nlnorm   d3itctl     cpchk
          1         1         1         3         4         0         0
+$ $
 $
 
-$    LSMTD
-         5
+$ $    LSMTD
+$          5
 *CONTROL_STRUCTURED
+$ *CONTROL_IMPLICIT_DYNAMICS
+$ 1
+$ *CONTROL_IMPLICIT_EIGENVALUE
+$ 12
 *CONTROL_SOLUTION
 $#    soln       nlq     isnan     lcint     lcacc     ncdcf     nocop     
          2         0         0       500         0         1         0
@@ -54,7 +59,7 @@ $#      dt      lcdt      beam     npltc    psetid
        0.1
 *DATABASE_EXTENT_BINARY
 $#   neiph     neips    maxint    strflg    sigflg    epsflg    rltflg    engflg
-        14        14        -1       111         1         1         1         1
+        70        70        -1       111         1         1         1         1
 $#  cmpflg    ieverp    beamip     dcomp      shge     stssz    n3thdt   ialemat
          0         0         0         1         1         1         2         1
 $# nintsld   pkp_sen      sclp     hydro     msscl     therm    intout    nodout
@@ -77,12 +82,14 @@ $#    nsid      temp       loc
 *DEFINE_CURVE
 111
 0.0, &temp_0
+0.1, &temp_0
 0.5, 315
 0.9, &temp_0
 &endtim, &temp_0
 *DEFINE_CURVE
 222
 0.0, &temp_0
+0.1, &temp_0
 0.5, 320
 0.9, &temp_0
 &endtim, &temp_0

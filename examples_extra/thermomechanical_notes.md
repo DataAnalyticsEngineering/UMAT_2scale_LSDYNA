@@ -36,11 +36,13 @@ __Conclusions & options__:
 - Best option
   Using UMAT -> everything has to be activated from the beginning so no sections & prepost automation can be used only to show what we intended to do. [in case there's time, we could look at birth/death parameters in prepost to kind of replicate activation/deactivation]
   - thermomech_comb_plastic_fine_umat
-    old are better, prob. due to larger time steps
+    old are better, prob. due to larger time steps.
+    smaller or absolute tolerance + large time steps reduces the accumulated error 
+    results are changing due to the different (automatic) time stepping
 
 - Not recommended: we can approximate activation/deactivation by giving all material parameters as curves with very small parameter values when inactive and the actual values when active but this will require drastic changes in the input file
 
 - Not recommended: we can implement activation/deactivation in UMAT but this might take some time and will require changes in the input file (prob. a new material should be defined for each part)
 
-
+__Don't use accuracy flags with UMAT__
 
