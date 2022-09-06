@@ -105,19 +105,22 @@ extern "C" void umat_cpp_mechanical_(const double& elastic_flag,
         auto norm_dev = dev_stress.norm();
         if (norm_dev > 0.)
         {
-            auto dev_normal = dev_stress / norm_dev;
+            auto normal = dev_stress / norm_dev;
             auto yield_stress = [&mat, &temperature, &yield_shift, &hardening_modulus](double hardening_var) { return yield_shift + mat.yield(temperature) + hardening_modulus * hardening_var; };
             auto evaluate_yield_function = [&mat, &temperature, &yield_stress](double x, double hardening_var) { return x - sqrt(2. / 3.) * yield_stress(hardening_var); };
             auto trial_yield_func = evaluate_yield_function(norm_dev, hardening_var);
-            if (trial_yield_func >= 0.)
+            if (trial_yield_func > 0.)
             {
                 // std::cout << "plastic" << '\n';
-                double d_lambda = trial_yield_func / (2. * mat.shear_modulus(temperature) + 2. / 3. * hardening_modulus * bool(trial_yield_func > 0.));
-                plastic_strain_mandel += d_lambda * dev_normal;
+                double two_G_plus_H = (2. * mat.shear_modulus(temperature) + 2. / 3. * hardening_modulus);
+                double four_G_squared = 4. * pow(mat.shear_modulus(temperature), 2);
+                auto N_times_N = (normal * normal.transpose());
+
+                double d_lambda = trial_yield_func / two_G_plus_H;
+                plastic_strain_mandel += d_lambda * normal;
                 hardening_var += sqrt(2. / 3.) * d_lambda;
                 stress_mandel = stiffness * (strain_mandel - plastic_strain_mandel - thermal_strain);
-                stiffness -= (4. * pow(mat.shear_modulus(temperature), 2) * (dev_normal * dev_normal.transpose()) / (2. * mat.shear_modulus(temperature) + 2. / 3. * yield_stress(hardening_var)))
-                             + (4. * pow(mat.shear_modulus(temperature), 2) * d_lambda / norm_dev * (P2 - dev_normal * dev_normal.transpose()));
+                stiffness -= (four_G_squared * d_lambda / norm_dev * (P2 - N_times_N)) + (four_G_squared * N_times_N / two_G_plus_H);
                 // assert(d_lambda >= 0.0);
                 // auto eig_val = stiffness.eigenvalues();
                 // assert(eig_val(0).real() > 0.0);

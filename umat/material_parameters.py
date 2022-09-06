@@ -3,7 +3,7 @@ import numpy as np
 
 I2 = np.asarray([1., 1., 1., 0, 0, 0])
 
-min_temperature = 293.15
+min_temperature = 293.00
 max_temperature = 1300
 
 poisson_ratio_cu = lambda x: 3.40000e-01 * x**0
