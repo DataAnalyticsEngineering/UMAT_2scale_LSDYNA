@@ -40,3 +40,5 @@ lspost.msg
 *.idea
 
 .ipynb_checkpoints
+
+exclude_*
