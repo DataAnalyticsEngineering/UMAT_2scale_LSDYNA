@@ -1,0 +1,3 @@
+segmentation: padding (sym), periodic?
+
+https://imagej.net/Hough_Circle_Transform
