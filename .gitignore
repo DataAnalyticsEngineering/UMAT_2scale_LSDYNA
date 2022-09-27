@@ -32,6 +32,7 @@ lspost.msg
 *.mp4
 *.png
 *.pdf
+*.xcf
 
 *.7z
 *.zip
