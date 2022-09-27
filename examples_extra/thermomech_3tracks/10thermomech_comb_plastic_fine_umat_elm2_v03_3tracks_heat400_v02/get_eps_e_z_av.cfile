@@ -1,0 +1,43 @@
+open d3plot "sim.d3plot"
+ac
+fringe 1061
+pfringe
+fringevariable add a "history var#43" 1041 1 0 0 -1 0 0 0
+fringevariable add b "history var#63" 1061 1 0 0 -1 0 0 0
+fringevariable fringe "a-b"
+state -1;
+genselect target element
+switch2selection
+genselect element add solid 34839/F5/0 
+genselect element add solid 34835/F5/0 
+genselect element add solid 26839/F5/0 
+genselect element add solid 26835/F5/0 
+genselect element add solid 18839/F5/0 
+genselect element add solid 18835/F5/0 
+genselect element add solid 10839/F5/0 
+genselect element add solid 10835/F5/0 
+genselect element add solid 40855/F5/0 
+genselect element add solid 40851/F2/0 
+genselect element add solid 40535/F5/0 
+genselect element add solid 40531/F5/0 
+genselect element add solid 40215/F2/0 
+genselect element add solid 40211/F5/0 
+genselect element add solid 39895/F5/0 
+genselect element add solid 39891/F5/0 
+genselect element add solid 39575/F5/0 
+genselect element add solid 39571/F5/0 
+genselect element add solid 39255/F5/0 
+genselect element add solid 39251/F5/0 
+genselect element add solid 41431/F5/0 
+genselect element add solid 41427/F5/0 
+genselect element add solid 41111/F5/0 
+genselect element add solid 41107/F5/0 
+shellsurf upper
+shellsurf minima
+shellsurf average
+shellsurf middle
+shellsurf lower
+shellsurf maxima
+plotpath element
+xyplot 1 savefile xypair "elstrain_z_av.csv" 1 all
+print png "elstrain_z_av.png" opaque enlisted "PlotWindow-1" 

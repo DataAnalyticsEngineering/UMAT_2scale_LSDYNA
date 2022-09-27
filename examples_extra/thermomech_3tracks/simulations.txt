@@ -1,0 +1,5 @@
+spot diameter: 1.9mm
+speed        : 150mm/min
+preheating to: 400, 300, 200c
+track spacing: 1.5 mm
+time between tracks: 4.7 sec

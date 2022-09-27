@@ -1,0 +1,8 @@
+open d3plot "sim.d3plot"
+genselect target node
+genselect node add circle2 in 25 8 10 0.2 0 0 1 0.2
+ntime 17
+xyplot 1 savefile ms_csv "temp_cycle.csv" 1 all
+xyplot 1 donemenu
+print png "temp_cycle.png" opaque enlisted "PlotWindow-1" 
+deletewin 1

@@ -1,0 +1,4 @@
+setpythonhome /home/alameddin/packages/pyenv/versions/3.6.5/
+open d3plot "sim.d3plot"
+ac
+runpython max_temp_over_time.py
