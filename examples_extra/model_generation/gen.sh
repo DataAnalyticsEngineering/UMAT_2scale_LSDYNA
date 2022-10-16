@@ -1,0 +1,1 @@
+lsprepost c=gen.cfile -nographics && cat parts.k && cat info.json
