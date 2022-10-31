@@ -2,12 +2,25 @@
 # tested on Ubuntu 20.04
 # run as: 
 # chmod +x setup_dyna.sh
-# bash /home/alameddin/simkom/src_pyrve/dyna/setup_dyna.sh q
+# ./setup_dyna.sh q
 
-dae_umat_2scale_lsdyna=/home/alameddin/simkom/src_dyna
+export intel_dir=/opt/intel
+source $intel_dir/oneapi/setvars.sh --force
+
+# directory of the current script
+# https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+echo $SCRIPTPATH
+
+export PYTHONPATH=$SCRIPTPATH/umat:$PYTHONPATH
+export PYTHONPATH=$SCRIPTPATH/external_packages:$PYTHONPATH
+export PYTHONPATH=$SCRIPTPATH/mixed_languages:$PYTHONPATH
+
+generate_patch() { diff -u lsdyna_object_version_ref/$1 lsdyna_object_version/$1 > lsdyna_added_files_ref/$1.patch; }
+
+dae_umat_2scale_lsdyna=$SCRIPTPATH/..
 
 cd $dae_umat_2scale_lsdyna
-source set_env.sh
 
 folder=lsdyna_object_version
 folder_ref=lsdyna_object_version_ref
