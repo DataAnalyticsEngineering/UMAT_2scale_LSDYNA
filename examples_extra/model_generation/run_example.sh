@@ -5,8 +5,9 @@ lsprepost c=gen.cfile -nographics
 # output: parts.k, mesh.k, info.json
 
 ### Step 2
-lsprepost mesh.k
-# open mesh.k and save without its parts (this was done automatically in python, where is the file?)
+# open mesh.k and save without its parts (this was done automatically in python)
+python3 remove_parts.py
+# lsprepost mesh.k
 # check if duplicate nodes are merged
 
 ### Step 3

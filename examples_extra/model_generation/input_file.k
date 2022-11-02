@@ -3,7 +3,7 @@ $ check mat_44
 $ use smaller time step & check the first two seconds
 *KEYWORD
 *PARAMETER
-Rendtim, 13
+Rendtim, 30
 Rpower, 0.56e9
 Rdepth, 0.3
 Rradius, 0.95
