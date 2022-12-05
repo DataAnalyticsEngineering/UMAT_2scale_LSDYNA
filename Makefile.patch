@@ -15,7 +15,7 @@
 +LD=ifort -g -fpe0 -traceback -debug extended -qopenmp -sox
  #
  LF= -static-intel -L/usr/X11R6/lib64 -lX11 -qopenmp -lrt -lstdc++ -lpthread -lstdc++ -lpthread
-+LFpython= -L/usr/lib/python3.8/config-3.8-x86_64-linux-gnu -L/usr/lib -lpython3.8 -lcrypt -lpthread -ldl  -lutil -lm -lm 
++LFpython= $(shell python-config --ldflags --embed)
  #
  #LMATH= liblapack.a libblas.a
  LMATH= libmkl_intel_ilp64.a libmkl_intel_thread.a libmkl_core.a
@@ -35,7 +35,7 @@
 +umat.o : umat/umat.cpp   
 +	$(CC) -Wall -c -O3 -march=native -mtune=native umat/umat.cpp -Iexternal_packages -I/usr/include/hdf5/serial/ -L/usr/lib/x86_64-linux-gnu/hdf5/serial/ -lhdf5
 +umat_cpp_call_py.o : umat/umat_cpp_call_py.cpp   
-+	$(CC) -Wall -c -O3 -march=native -mtune=native umat/umat_cpp_call_py.cpp -I/opt/intel/oneapi/intelpython/python3.7/include/python3.7m/ -I/home/alameddin/.dontsync/packages/intel/oneapi/intelpython/python3.7/include/python3.7m/
++	$(CC) -Wall -c -O3 -march=native -mtune=native umat/umat_cpp_call_py.cpp $(shell python-config --includes)
 +include_ttb.o: external_packages/include_ttb.F
 +	$(FC) -c $(FF) -I. external_packages/include_ttb.F
 +forpy_mod.o: external_packages/forpy_mod.F90
@@ -48,3 +48,4 @@
  init_dyn21.o: init_dyn21.f nhisparm.inc
  	$(FC) -c $(FF) -I. init_dyn21.f
  userinterface.o: userinterface.f90
+
