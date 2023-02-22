@@ -5,10 +5,11 @@ services:
     image: umat_2scale_lsdyna
     build: .
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=${DISPLAY}  # docker run -e DISPLAY=$DISPLAY
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - /dev/dri:/dev/dri
-    network_mode: host
-    ipc: host
-    tty: true
+      - /tmp/.X11-unix:/tmp/.X11-unix  # docker run -v /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri  # docker run -v /dev/dri:/dev/dri
+    network_mode: host  # docker run --net=host
+    ipc: host  # docker run --ipc=host
+    stdin_open: true  # docker run -i
+    tty: true  # docker run -t

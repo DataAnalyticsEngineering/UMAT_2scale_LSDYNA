@@ -5,13 +5,13 @@
 # $ docker build --network=host -t umat_2scale_lsdyna .
 # Run the docker container:
 # $ xhost +local:root
-# $ docker run -it --rm --ipc=host --net=host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/dri:/dev/dri umat_2scale_lsdyna
+# $ docker run -it --ipc=host --net=host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/dri:/dev/dri umat_2scale_lsdyna
 # $ xhost -local:root
 # Or start the container using docker compose:
 # $ docker compose up
 # And then attach to the running container:
 # $ xhost +local:root
-# $ docker exec umat_2scale_lsdyna bash
+# $ docker compose exec umat_2scale_lsdyna bash
 # $ xhost -local:root
 #####################################
 
