@@ -8,7 +8,7 @@
 # $ docker run -it --ipc=host --net=host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/dri:/dev/dri umat_2scale_lsdyna
 # $ xhost -local:root
 # Or start the container using docker compose:
-# $ docker compose up
+# $ docker compose up -d
 # And then attach to the running container:
 # $ xhost +local:root
 # $ docker compose exec umat_2scale_lsdyna bash
