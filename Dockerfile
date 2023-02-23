@@ -105,7 +105,7 @@ RUN . ~/.bashrc && echo "export PYTHONPATH=$PYTHONPATH:$LSDYNA_DIR/umat:$LSDYNA_
 
 # Install dependencies for lsprepost (needed for the GUI)
 RUN apt install -qq -y libgtk2.0-0 libsecret-1-0 libgl1 libglu1-mesa libsm6 libxtst6 libxmu6 libopenjp2-7 libspeex1 libtheora0 \
-    libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module
+    libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module alsa-base alsa-utils
 
 # Test external packages
 RUN . ~/.bashrc && cd ${REPO_DIR}/external_packages && \
