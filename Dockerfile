@@ -13,6 +13,9 @@
 # $ xhost +local:root
 # $ docker compose exec umat_2scale_lsdyna bash
 # $ xhost -local:root
+# Running the container on Windows using Docker Desktop:
+# First install VcXsrv and start XLaunch with disabled access control
+# $ docker run -it --ipc=host --net=host -e DISPLAY=host.docker.internal:0.0 umat_2scale_lsdyna
 #####################################
 
 # Set the base image (specify the tag as Intel plans to replace ICC)
@@ -105,7 +108,7 @@ RUN . ~/.bashrc && echo "export PYTHONPATH=$PYTHONPATH:$LSDYNA_DIR/umat:$LSDYNA_
 
 # Install dependencies for lsprepost (needed for the GUI)
 RUN apt install -qq -y libgtk2.0-0 libsecret-1-0 libgl1 libglu1-mesa libsm6 libxtst6 libxmu6 libopenjp2-7 libspeex1 libtheora0 \
-    libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module alsa-base alsa-utils
+    libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module alsa-base alsa-utils xvfb
 
 # Test external packages
 RUN . ~/.bashrc && cd ${REPO_DIR}/external_packages && \

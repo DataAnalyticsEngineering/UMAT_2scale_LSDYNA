@@ -1,7 +1,8 @@
 # /usr/bin/time -v 
 
 ### Step 1
-lsprepost c=gen.cfile -nographics
+# lsprepost c=gen.cfile -nographics
+Xvfb :99 & env DISPLAY=:99 lsprepost c=gen.cfile -nographics && pkill Xvfb
 # output: parts.k, mesh.k, info.json
 
 ### Step 2
