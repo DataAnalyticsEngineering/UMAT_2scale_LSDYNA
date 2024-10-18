@@ -1,6 +1,6 @@
 # usermat_2scale_lsdyna
 
-Basics to implement user-defined material routines in LS-Dyna with Python and C++ and realize two scale simulation schemes in LS-DYNA.
+Basics to implement user-defined material routines in LS-Dyna with Python and C++. This repo realizes two scale simulation schemes in LS-DYNA.
 
 ## External dependencies
 
@@ -19,16 +19,16 @@ See the `license` file for the project license and the licenses of the included 
 
 
 ## Citations
-Shadi Alameddin, Felix Fritzen. *LS-DYNA two-scale homogenization extension*. Version 1.0.0 (2021).
+Shadi Sharba, Felix Fritzen, Julius Herb. *LS-DYNA two-scale homogenization extension*. Version 1.0.0 (2021).
 
 ```
-@software{alameddin2021,
-  author       = {Shadi Alameddin, Felix Fritzen},
+@software{sharba2021,
+  author       = {Shadi Sharba, Felix Fritzen, Julius Herb},
   title        = {LS-DYNA two-scale homogenization extension},
   month        = Aug,
   year         = 2021,
   version      = {v1.0.0},
-  url          = {https://gitlab.com/shadialameddin/dae_umat_2scale_lsdyna}
+  url          = {https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA}
 }
 ```
 
