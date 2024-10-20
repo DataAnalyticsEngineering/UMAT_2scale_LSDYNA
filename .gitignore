@@ -42,3 +42,5 @@ lspost.msg
 .ipynb_checkpoints
 
 exclude_*
+
+ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz
