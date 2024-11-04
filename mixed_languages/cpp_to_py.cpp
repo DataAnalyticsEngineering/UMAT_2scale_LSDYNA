@@ -17,7 +17,7 @@ bool pywrapper_()
     }
 
     // umat.py should be in PYTHONPATH
-    // std::wstring path = L"lsdyna_added_files_ref/umat/umat.py";
+    // std::wstring path = L"repo_files/umat/umat.py";
     // PySys_SetPath(&path[0u]);
 
     // Import umat.py module

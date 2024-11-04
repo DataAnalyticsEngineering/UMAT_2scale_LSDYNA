@@ -1,9 +1,8 @@
-version: "3"
-
 services:
-  umat_2scale_lsdyna:
-    image: umat_2scale_lsdyna
+  UMAT_2scale_LSDYNA:
     build: .
+    image: my_umat_lsdyna_image
+    container_name: my_umat_lsdyna_container
     environment:
       - DISPLAY=${DISPLAY}  # docker run -e DISPLAY=$DISPLAY
     volumes:
@@ -11,5 +10,6 @@ services:
       - /dev/dri:/dev/dri  # docker run -v /dev/dri:/dev/dri
     network_mode: host  # docker run --net=host
     ipc: host  # docker run --ipc=host
+    entrypoint: ["/bin/bash"]
     stdin_open: true  # docker run -i
     tty: true  # docker run -t

@@ -4,7 +4,7 @@ from material_parameters import *
 
 # Note: only diagonal entries from "conductivity" are returned
 
-with h5py.File('/home/alameddin/simkom/src_dyna/lsdyna_added_files_ref/umat/effective_response.h5', 'r') as file:
+with h5py.File('/home/alameddin/simkom/src_dyna/repo_files/umat/effective_response.h5', 'r') as file:
     temperature = file['temperature'][:]
     conductivity = file['conductivity'][:]
     stiffness = file['stiffness'][:]

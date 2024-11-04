@@ -13,7 +13,7 @@ import h5py
 
 sqrt2 = np.sqrt(2)
 
-file = "/home/alameddin/simkom/src_dyna/lsdyna_added_files_ref/examples/two_scale/homogeneous_single_track/coupled.d3plot"
+file = "/home/alameddin/simkom/src_dyna/repo_files/examples/two_scale/homogeneous_single_track/coupled.d3plot"
 execute_command(f'model remove 1')
 execute_command(f'open d3plot {file}')
 execute_command(f'ac')

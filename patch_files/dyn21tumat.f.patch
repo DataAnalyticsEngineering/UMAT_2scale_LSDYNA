@@ -1,0 +1,145 @@
+--- lsdyna_object_version_ref/dyn21tumat.f	2020-06-24 18:43:36.000000000 +0200
++++ lsdyna_object_version/dyn21tumat.f	2021-08-16 12:30:06.417213263 +0200
+@@ -415,74 +415,74 @@
+ c    5       /'  Thermal History variable 2-5   : Stuff'/)
+       return
+       end
+-      subroutine thumat13(c1,c2,c3,cvl,dcvdtl,hsrcl,dhsrcdtl,
+-     1 hsv,hsvm,nmecon,r_matp,crv,nnpcrv,
+-     2 nel,nep,iep,eltype,dt,atime,ihsrcl,temp,ttconv,ttnext,
+-     3 tmconv,tmnext,inithis)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      include 'iounits.inc'
+-      character*(*) eltype
+-      logical inithis
+-      dimension hsv(*),hsvm(*),r_matp(*),crv(lq1,2,*)
+-      integer nnpcrv(*)
+-c
+-c     Thermal usermaterial number 13.
+-c
+-c     See comments at the begining of subroutine thusrmat
+-c     for instructions.
+-c
+- 1000 continue
+-c     write(iotty,1100)
+-c     write(iohsp,1100)
+-c     write(iomsg,1100)
+-c     call adios(2)
+-      ierdat(1)=13
+-      call lsmsg(3,MSG_SOL+1351,ioall,ierdat,rerdat,cerdat,0)
+-c1100 format(/' *** Error thumat13 not defined ')
+-      return
+-      end
+-      subroutine thumat14(c1,c2,c3,cvl,dcvdtl,hsrcl,dhsrcdtl,
+-     1 hsv,hsvm,nmecon,r_matp,crv,nnpcrv,
+-     2 nel,nep,iep,eltype,dt,atime,ihsrcl,temp,ttconv,ttnext,
+-     3 tmconv,tmnext,inithis)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      include 'iounits.inc'
+-      character*(*) eltype
+-      logical inithis
+-      dimension hsv(*),hsvm(*),r_matp(*),crv(lq1,2,*)
+-      integer nnpcrv(*)
+-c
+-c     Thermal usermaterial number 14.
+-c
+-c     See comments at the begining of subroutine thusrmat
+-c     for instructions.
+-c
+- 1000 continue
+-c     write(iotty,1100)
+-c     write(iohsp,1100)
+-c     write(iomsg,1100)
+-c     call adios(2)
+-      ierdat(1)=14
+-      call lsmsg(3,MSG_SOL+1351,ioall,ierdat,rerdat,cerdat,0)
+-c1100 format(/' *** Error thumat14 not defined ')
+-      return
+-      end
++!       subroutine thumat13(c1,c2,c3,cvl,dcvdtl,hsrcl,dhsrcdtl,
++!      1 hsv,hsvm,nmecon,r_matp,crv,nnpcrv,
++!      2 nel,nep,iep,eltype,dt,atime,ihsrcl,temp,ttconv,ttnext,
++!      3 tmconv,tmnext,inithis)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       include 'iounits.inc'
++!       character*(*) eltype
++!       logical inithis
++!       dimension hsv(*),hsvm(*),r_matp(*),crv(lq1,2,*)
++!       integer nnpcrv(*)
++! c
++! c     Thermal usermaterial number 13.
++! c
++! c     See comments at the begining of subroutine thusrmat
++! c     for instructions.
++! c
++!  1000 continue
++! c     write(iotty,1100)
++! c     write(iohsp,1100)
++! c     write(iomsg,1100)
++! c     call adios(2)
++!       ierdat(1)=13
++!       call lsmsg(3,MSG_SOL+1351,ioall,ierdat,rerdat,cerdat,0)
++! c1100 format(/' *** Error thumat13 not defined ')
++!       return
++!       end
++!       subroutine thumat14(c1,c2,c3,cvl,dcvdtl,hsrcl,dhsrcdtl,
++!      1 hsv,hsvm,nmecon,r_matp,crv,nnpcrv,
++!      2 nel,nep,iep,eltype,dt,atime,ihsrcl,temp,ttconv,ttnext,
++!      3 tmconv,tmnext,inithis)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       include 'iounits.inc'
++!       character*(*) eltype
++!       logical inithis
++!       dimension hsv(*),hsvm(*),r_matp(*),crv(lq1,2,*)
++!       integer nnpcrv(*)
++! c
++! c     Thermal usermaterial number 14.
++! c
++! c     See comments at the begining of subroutine thusrmat
++! c     for instructions.
++! c
++!  1000 continue
++! c     write(iotty,1100)
++! c     write(iohsp,1100)
++! c     write(iomsg,1100)
++! c     call adios(2)
++!       ierdat(1)=14
++!       call lsmsg(3,MSG_SOL+1351,ioall,ierdat,rerdat,cerdat,0)
++! c1100 format(/' *** Error thumat14 not defined ')
++!       return
++!       end
+       subroutine thumat15(c1,c2,c3,cvl,dcvdtl,hsrcl,dhsrcdtl,
+      1 hsv,hsvm,nmecon,r_matp,crv,nnpcrv,
+      2 nel,nep,iep,eltype,dt,atime,ihsrcl,temp,ttconv,ttnext,

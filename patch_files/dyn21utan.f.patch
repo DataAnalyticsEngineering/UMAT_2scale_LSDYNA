@@ -1,0 +1,191 @@
+--- lsdyna_object_version_ref/dyn21utan.f	2020-06-24 18:43:37.000000000 +0200
++++ lsdyna_object_version/dyn21utan.f	2021-08-16 12:30:06.413213243 +0200
+@@ -354,8 +354,8 @@
+       common/aux14loc/sig1(nlq),sig2(nlq),sig3(nlq),sig4(nlq),sig5(nlq),
+      & sig6(nlq),epsps(nlq),hsvs(nlq,NHISVAR)
+       common/aux18loc/dd(nlq),def(nlq),ddq(nlq)
+-      common/aux33loc/
+-     1 ix1(nlq),ix2(nlq),ix3(nlq),ix4(nlq),ixs(nlq,4),mxt(nlq)
++      common/aux33loc/ix1(nlq),ix2(nlq),ix3(nlq),ix4(nlq),ix5(nlq),
++     1 ix6(nlq),ix7(nlq),ix8(nlq),mxt(nlq)
+       common/aux40loc/
+      1 a11(nlq),a12(nlq),a13(nlq),a21(nlq),a22(nlq),a23(nlq),
+      2 a31(nlq),a32(nlq),a33(nlq),z11(nlq),z12(nlq),z13(nlq),
+@@ -1615,44 +1615,44 @@
+ c
+       return
+       end
+-      subroutine utan43(cm,eps,sig,epsp,hsv,dt1,unsym,capa,etype,tt,
+-     1 temper,es,crv,nnpcrv,failel,cma,qmat)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*)
+-      integer nnpcrv(*)
+-      dimension es(6,*),qmat(3,3)
+-      logical failel,unsym
+-      character*5 etype
+-c
+-      return
+-      end
+-      subroutine utan44(cm,eps,sig,epsp,hsv,dt1,unsym,capa,etype,tt,
+-     1 temper,es,crv,nnpcrv,failel,cma,qmat)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*)
+-      integer nnpcrv(*)
+-      dimension es(6,*),qmat(3,3)
+-      logical failel,unsym
+-      character*5 etype
+-c
+-      return
+-      end
++!       subroutine utan43(cm,eps,sig,epsp,hsv,dt1,unsym,capa,etype,tt,
++!      1 temper,es,crv,nnpcrv,failel,cma,qmat)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*)
++!       integer nnpcrv(*)
++!       dimension es(6,*),qmat(3,3)
++!       logical failel,unsym
++!       character*5 etype
++! c
++!       return
++!       end
++!       subroutine utan44(cm,eps,sig,epsp,hsv,dt1,unsym,capa,etype,tt,
++!      1 temper,es,crv,nnpcrv,failel,cma,qmat)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       dimension cm(*),eps(*),sig(*),hsv(*),crv(lq1,2,*),cma(*)
++!       integer nnpcrv(*)
++!       dimension es(6,*),qmat(3,3)
++!       logical failel,unsym
++!       character*5 etype
++! c
++!       return
++!       end
+       subroutine utan45(cm,eps,sig,epsp,hsv,dt1,unsym,capa,etype,tt,
+      1 temper,es,crv,nnpcrv,failel,cma,qmat)
+ c
+@@ -1899,50 +1899,50 @@
+ c
+       return
+       end
+-      subroutine utan43v(cm,d1,d2,d3,d4,d5,d6,sig1,sig2,
+-     . sig3,sig4,sig5,sig6,epsps,hsvs,unsym,lft,llt,dt1siz,capa,
+-     . etype,tt,temps,dsave,nlqa,crv,nnpcrv,failels,cma,qmat)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      dimension d1(*),d2(*),d3(*),d4(*),d5(*),d6(*)
+-      dimension sig1(*),sig2(*),sig3(*),sig4(*),sig5(*),sig6(*)
+-      dimension epsps(*),hsvs(nlq,*),dt1siz(*),cm(*),qmat(nlq,3,3)
+-      dimension temps(*),dsave(nlq,6,*),crv(lq1,2,*),cma(*)
+-      integer nnpcrv(*)
+-      logical failels(*),unsym
+-      character*5 etype
+-c
+-      return
+-      end
+-      subroutine utan44v(cm,d1,d2,d3,d4,d5,d6,sig1,sig2,
+-     . sig3,sig4,sig5,sig6,epsps,hsvs,unsym,lft,llt,dt1siz,capa,
+-     . etype,tt,temps,dsave,nlqa,crv,nnpcrv,failels,cma,qmat)
+-c
+-c******************************************************************
+-c|  Livermore Software Technology Corporation  (LSTC)             |
+-c|  ------------------------------------------------------------  |
+-c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
+-c|  All rights reserved                                           |
+-c******************************************************************
+-c
+-      include 'nlqparm'
+-      dimension d1(*),d2(*),d3(*),d4(*),d5(*),d6(*)
+-      dimension sig1(*),sig2(*),sig3(*),sig4(*),sig5(*),sig6(*)
+-      dimension epsps(*),hsvs(nlq,*),dt1siz(*),cm(*),qmat(nlq,3,3)
+-      dimension temps(*),dsave(nlq,6,*),crv(lq1,2,*),cma(*)
+-      integer nnpcrv(*)
+-      logical failels(*),unsym
+-      character*5 etype
+-c
+-      return
+-      end
++!       subroutine utan43v(cm,d1,d2,d3,d4,d5,d6,sig1,sig2,
++!      . sig3,sig4,sig5,sig6,epsps,hsvs,unsym,lft,llt,dt1siz,capa,
++!      . etype,tt,temps,dsave,nlqa,crv,nnpcrv,failels,cma,qmat)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       dimension d1(*),d2(*),d3(*),d4(*),d5(*),d6(*)
++!       dimension sig1(*),sig2(*),sig3(*),sig4(*),sig5(*),sig6(*)
++!       dimension epsps(*),hsvs(nlq,*),dt1siz(*),cm(*),qmat(nlq,3,3)
++!       dimension temps(*),dsave(nlq,6,*),crv(lq1,2,*),cma(*)
++!       integer nnpcrv(*)
++!       logical failels(*),unsym
++!       character*5 etype
++! c
++!       return
++!       end
++!       subroutine utan44v(cm,d1,d2,d3,d4,d5,d6,sig1,sig2,
++!      . sig3,sig4,sig5,sig6,epsps,hsvs,unsym,lft,llt,dt1siz,capa,
++!      . etype,tt,temps,dsave,nlqa,crv,nnpcrv,failels,cma,qmat)
++! c
++! c******************************************************************
++! c|  Livermore Software Technology Corporation  (LSTC)             |
++! c|  ------------------------------------------------------------  |
++! c|  Copyright 1987-2008 Livermore Software Tech. Corp             |
++! c|  All rights reserved                                           |
++! c******************************************************************
++! c
++!       include 'nlqparm'
++!       dimension d1(*),d2(*),d3(*),d4(*),d5(*),d6(*)
++!       dimension sig1(*),sig2(*),sig3(*),sig4(*),sig5(*),sig6(*)
++!       dimension epsps(*),hsvs(nlq,*),dt1siz(*),cm(*),qmat(nlq,3,3)
++!       dimension temps(*),dsave(nlq,6,*),crv(lq1,2,*),cma(*)
++!       integer nnpcrv(*)
++!       logical failels(*),unsym
++!       character*5 etype
++! c
++!       return
++!       end
+       subroutine utan45v(cm,d1,d2,d3,d4,d5,d6,sig1,sig2,
+      . sig3,sig4,sig5,sig6,epsps,hsvs,unsym,lft,llt,dt1siz,capa,
+      . etype,tt,temps,dsave,nlqa,crv,nnpcrv,failels,cma,qmat)

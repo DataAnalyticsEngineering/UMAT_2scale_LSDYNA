@@ -1,0 +1,25 @@
+--- lsdyna_object_version_ref/init_dyn21.f	2020-06-24 18:43:36.000000000 +0200
++++ lsdyna_object_version/init_dyn21.f	2021-08-16 12:30:06.421213284 +0200
+@@ -80,6 +80,7 @@
+ c|  All rights reserved                                           |
+ c******************************************************************
+ c
++      use forpy_mod
+       include 'nlqparm'
+       include 'nhisparm.inc'
+       parameter (NBEL8A=max(100,2*(NHISVUE+45)))
+@@ -90,6 +91,7 @@
+       integer*8 ideh8
+       common/strhx/ideh8,ideh,mxh,ixhx(8),xe(3,8),ve(3,8),strnh(6),
+      . ressh,hisvar(nconst_max)
++      integer :: ierror
+       ideh8=0
+       ideh=0
+ c
+@@ -99,5 +101,6 @@
+       iusercomm(3)=nlq*NBEL8A
+       iusercomm(4)=nlq*NBEL7
+ c
++      ierror = forpy_initialize()
+       return
+       end

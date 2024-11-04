@@ -32,29 +32,20 @@ Shadi Sharba, Felix Fritzen, Julius Herb. *LS-DYNA two-scale homogenization exte
 }
 ```
 
-## Compiling the base version on Linux (Ubuntu 20.04.2 LTS)
-- Start by obtaining `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` usermat package/object version of LS-DYNA from your local distributor of LS-DYNA. The directory where `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` is placed will be referred to as `dyna_umat_directory`
-- Install Intel® C and Fortran compilers that are included in the Intel® oneAPI HPC Toolkit which is available for free. Examples below have been compiled using ifort, icc version 2021.1 and Python 3.7.9 & 3.8.5. In addition, some tests use GNU Fortran 9.3.0.
+## Compiling using docker
 
-- Obtain the new interface files from GitLab and position it in `dyna_umat_directory` via
+- Obtain the new interface files from GitHub to `UMAT_2scale_LSDYNA` folder via
 ```
-cd dyna_umat_directory
-git clone git@gitlab.com:shadialameddin/dae_umat_2scale_lsdyna.git lsdyna_added_files_ref
+git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && cd UMAT_2scale_LSDYNA
 ```
-- Using a terminal, navigate to `lsdyna_added_files_ref` and create a symbolic link to the main setup file via
-```
-cd lsdyna_added_files_ref
-./create_links.sh
-cd ..
-```
-- Edit `set_env.sh` to point to the correct `intel_dir` and add python examples within `lsdyna_added_files_ref` to `PYTHONPATH`.
-- Edit `setup_dyna.sh` to point to the absolute path of `dae_umat_2scale_lsdyna`.
-- Now everything is in place to compile the usermat package, to do that, from `dyna_umat_directory` run `./setup_dyna.sh`.
-The new executable will be placed in `dyna_umat_directory/lsdyna_object_version/lsdynaumat`
 
-  ### Note
-  
-  In case of issues while running from a new shell, setting the correct environmental variables via running `source set_env` should fix the problem.
+- Obtain `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` usermat package/object version of LS-DYNA from your local distributor of LS-DYNA. Here are some helpful links [[lsdyna-ansys](https://lsdyna.ansys.com/downloader-filter/),[](https://innovationspace.ansys.com/forum/forums/reply/235696/)]. Move `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` to `UMAT_2scale_LSDYNA`
+
+- Using a terminal, run one of the following commands to build the docker image, compile the new executable and enter the running container:
+  - `docker-compose up --build -d && docker-compose run UMAT_2scale_LSDYNA && docker-compose down`
+  - `docker compose build --progress plain && docker run -it my_umat_lsdyna_image && docker-compose down`
+
+- The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
 
 ## Test cases:
 - External packages: test cases of these packages are included in `external_packages/test_*.sh`

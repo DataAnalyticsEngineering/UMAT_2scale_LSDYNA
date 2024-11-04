@@ -16,14 +16,13 @@ export PYTHONPATH=$SCRIPTPATH/umat:$PYTHONPATH
 export PYTHONPATH=$SCRIPTPATH/external_packages:$PYTHONPATH
 export PYTHONPATH=$SCRIPTPATH/mixed_languages:$PYTHONPATH
 
-generate_patch() { diff -u lsdyna_object_version_ref/$1 lsdyna_object_version/$1 > lsdyna_added_files_ref/$1.patch; }
+cd $SCRIPTPATH/..
 
-dae_umat_2scale_lsdyna=$SCRIPTPATH/..
-
-cd $dae_umat_2scale_lsdyna
-
+repo_files=repo_files
 folder=lsdyna_object_version
 folder_ref=lsdyna_object_version_ref
+
+generate_patch() { diff -u $folder_ref/$1 $folder/$1 > $repo_files/$1.patch; }
 
 mode="$1"
 
@@ -50,7 +49,8 @@ fprettify **/**/umat_elastic_44_14.F90
 fprettify **/**/umat_elastic_43_13.F90
 
 # add new files from the git repo
-ln -sf $(pwd)/lsdyna_added_files_ref/* $folder
+cp $repo_files/patch_files/* $repo_files
+ln -sf $(pwd)/$repo_files/* $folder
 cd $folder
 
 # apply batches when not debugging
