@@ -43,4 +43,11 @@ lspost.msg
 
 exclude_*
 
+lsprepost4.9_common/
+lsdyna_object_version/
+lsdyna_object_version_ref/
+
+lsprepost.tgz
 ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz
+
+repo_files/mixed_languages/*.o

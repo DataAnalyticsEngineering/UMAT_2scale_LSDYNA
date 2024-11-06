@@ -8,6 +8,7 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix  # docker run -v /tmp/.X11-unix:/tmp/.X11-unix
       - /dev/dri:/dev/dri  # docker run -v /dev/dri:/dev/dri
+      - ./:/workspaces/UMAT_2scale_LSDYNA # mount current dir to /workspaces/UMAT_2scale_LSDYNA
     network_mode: host  # docker run --net=host
     ipc: host  # docker run --ipc=host
     entrypoint: ["/bin/bash"]

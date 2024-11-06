@@ -43,7 +43,7 @@ git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && 
 
 - Using a terminal, run one of the following commands to build the docker image, compile the new executable and enter the running container:
   - `docker-compose up --build -d && docker-compose run UMAT_2scale_LSDYNA && docker-compose down`
-  - `docker compose build --progress plain && docker run -it my_umat_lsdyna_image && docker-compose down`
+  - `docker compose build --progress plain && docker run -it my_umat_lsdyna_image`
 
 - The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
 

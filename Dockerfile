@@ -47,12 +47,6 @@ ENV PATH="$PATH:$PYENV_ROOT/shims:$PYENV_ROOT/bin:$LSDYNA_DIR:$LSPREPOST_DIR"
 # Set PYTHONPATH for mixed language programming
 ENV PYTHONPATH=$PYTHONPATH:$LSDYNA_DIR/umat:$LSDYNA_DIR/mixed_languages
 
-RUN mkdir -p ${REPO_DIR} && mkdir -p ${LSDYNA_DIR} && mkdir -p ${LSPREPOST_DIR}
-WORKDIR ${REPO_DIR}
-
-# Install lsprepost
-RUN wget -q https://ftp.lstc.com/anonymous/outgoing/lsprepost/4.9/linux64/lsprepost-4.9.11-common-22Nov2022.tgz -O ${PROJECT_DIR}/lsprepost.tgz && tar xf ${PROJECT_DIR}/lsprepost.tgz -C ${PROJECT_DIR}
-
 # Install pyenv
 RUN curl -sS https://pyenv.run | bash
 
@@ -62,20 +56,6 @@ RUN pyenv versions
 
 # Install pip packages for Python 3.8.15
 RUN python -m pip install --upgrade pip && pip install yapf clang-format fprettify numpy
-
-COPY . ${REPO_DIR}
-
-# Setup and compile LSDYNA usermat package
-RUN mv ${LSDYNA_UMAT} ..
-
-# Ensure using Unix LF line break in setup_*.sh, if you use autocrlf = true on Windows.
-RUN ./setup_full.sh
-
-# Test external packages
-RUN $set_intel_var && cd ${REPO_DIR}/external_packages && ./test_ttb.sh && ./test_forpy.sh && ./test_ezh5.sh
-
-# Test mixed language programming
-RUN $set_intel_var && cd ${REPO_DIR}/mixed_languages && ./test_call_cpp.sh && ./test_call_py.sh
 
 # Set working directory
 WORKDIR ${PROJECT_DIR}
