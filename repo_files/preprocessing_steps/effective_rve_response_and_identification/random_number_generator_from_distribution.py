@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
 
 # pick random numbers from a distribution
-# f = np.load('/home/alameddin/src/0data/simkom_input_images/digital_3d.npz')
+# f = np.load('~/src/0data/simkom_input_images/digital_3d.npz')
 # pos_and_r = f['pos_and_r']
 # f.close()
 # ecdff = ECDF(pos_and_r[:, -1]) + 5

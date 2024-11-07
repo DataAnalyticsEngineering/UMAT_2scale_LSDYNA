@@ -1,5 +1,5 @@
 # updateintel
-export PYTHONPATH=/home/alameddin/simkom/src_pyrve/dyna/repo_files:$PYTHONPATH
+export PYTHONPATH=<simkom_path>/src_pyrve/dyna/repo_files:$PYTHONPATH
 
 rm -rf thermal.*
 /usr/bin/time -v lsdyna ncpu=12 i=input.k jobid=thermal

@@ -17,7 +17,7 @@ from scipy.spatial.distance import cdist
 # 500 x 500 x 800 micrometers
 micro_to_voxel_scaling_factor = 400 / 500
 micro_to_voxel_scaling_factor_2d = 185 / 200
-file = SD('/home/alameddin/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
+file = SD('~/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
 print(file.info())
 print(file.datasets())
 # 23: uint16 DFNT_UINT16 (23) 16-bit unsigned integer type
@@ -112,10 +112,10 @@ for i in range(10):
     plt.imshow(new_d3img[:, :, i])
     plt.show()
 
-np.savez_compressed('/home/alameddin/src/0data/simkom_input_images/WS_2a.npz', d3img=new_d3img)
+np.savez_compressed('~/src/0data/simkom_input_images/WS_2a.npz', d3img=new_d3img)
 
 #%% volume average
-data = np.load('/home/alameddin/src/0data/simkom_input_images/WS_2a.npz')
+data = np.load('~/src/0data/simkom_input_images/WS_2a.npz')
 d3img = data['d3img']
 print(f'global vol_av: {d3img.sum()/d3img.size = :.2f}')
 # import pyvista as pv
@@ -175,7 +175,7 @@ def ecdf(data):
     y = np.arange(1, n + 1) / n
     return (x, y)
 
-f = np.load('/home/alameddin/src/0data/simkom_input_images/digital_3d.npz')
+f = np.load('~/src/0data/simkom_input_images/digital_3d.npz')
 pos_and_r = f['pos_and_r']
 f.close()
 
@@ -235,7 +235,7 @@ def ecdf(data):
     y = np.arange(1, n + 1) / n
     return (x, y)
 
-f = np.load('/home/alameddin/src/0data/simkom_input_images/digital_3d.npz')
+f = np.load('~/src/0data/simkom_input_images/digital_3d.npz')
 pos_and_r = f['pos_and_r']
 f.close()
 
@@ -277,7 +277,7 @@ for i in range(1):
     # plt.plot(ecdff.x, ecdff.y)
     # plt.show()
 
-    particles = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/particles.npy')
+    particles = np.load('~/src/pyrve/segmentation/segmentation_2d/particles.npy')
     particles = particles / micro_to_voxel_scaling_factor_2d
     z_squared = r0**2 - particles[:, 2]**2
     z_squared[z_squared < 0] = 0

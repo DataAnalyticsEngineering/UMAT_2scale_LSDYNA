@@ -1,6 +1,6 @@
-# file:///home/alameddin/LSTC/LS-PrePost4.8/lsppconf
-# pythonhome = /home/alameddin/.dontsync/packages/pyenv/versions/3.6.5/
-# or setpythonhome /home/alameddin/.dontsync/packages/pyenv/versions/3.6.5/
+# file://~/LSTC/LS-PrePost4.8/lsppconf
+# pythonhome = ~/.dontsync/packages/pyenv/versions/3.6.5/
+# or setpythonhome ~/.dontsync/packages/pyenv/versions/3.6.5/
 
 import DataCenter as dc
 from DataCenter import Type, Ipt
@@ -13,7 +13,7 @@ import h5py
 
 sqrt2 = np.sqrt(2)
 
-file = "/home/alameddin/simkom/src_dyna/repo_files/examples/two_scale/homogeneous_single_track/coupled.d3plot"
+file = "<simkom_path>/src_dyna/repo_files/examples/two_scale/homogeneous_single_track/coupled.d3plot"
 execute_command(f'model remove 1')
 execute_command(f'open d3plot {file}')
 execute_command(f'ac')

@@ -1,4 +1,4 @@
-# usermat_2scale_lsdyna
+# UMAT_2scale_LSDYNA
 
 Basics to implement user-defined material routines in LS-Dyna with Python and C++. This repo realizes two scale simulation schemes in LS-DYNA.
 
@@ -34,20 +34,19 @@ Shadi Sharba, Felix Fritzen, Julius Herb. *LS-DYNA two-scale homogenization exte
 
 ## Compiling using docker
 
-- Obtain the new interface files from GitHub to `UMAT_2scale_LSDYNA` folder via
+- Obtain the new interface files from GitHub:
 ```
 git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && cd UMAT_2scale_LSDYNA
 ```
 
-- Obtain `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` usermat package/object version of LS-DYNA from your local distributor of LS-DYNA. Here are some helpful links [[lsdyna-ansys](https://lsdyna.ansys.com/downloader-filter/),[](https://innovationspace.ansys.com/forum/forums/reply/235696/)]. Move `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` to `UMAT_2scale_LSDYNA`
+- Obtain `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` usermat package/object version of LS-DYNA from your local distributor of LS-DYNA and place it in `UMAT_2scale_LSDYNA`. Here are some helpful links ([lsdyna-ansys](https://lsdyna.ansys.com/downloader-filter/),[ansys-forum](https://innovationspace.ansys.com/forum/forums/reply/235696/)).
 
-- Using a terminal, run one of the following commands to build the docker image, compile the new executable and enter the running container:
-  - `docker-compose up --build -d && docker-compose run UMAT_2scale_LSDYNA && docker-compose down`
-  - `docker compose build --progress plain && docker run -it my_umat_lsdyna_image`
+- Using a terminal, run `0_run_in_docker.sh` to build the docker image and enter the running container:
 
-- The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
+- Inside the docker container, run `1_setup_dyna.sh` to compile the new object version of LS-DYNA. The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
 
 ## Test cases:
+You can use `2_run_tests.sh` inside the docker container to run the following test cases:
 - External packages: test cases of these packages are included in `external_packages/test_*.sh`
   - `test_ttb.sh`
   - `test_forpy.sh`
@@ -57,6 +56,8 @@ git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && 
   - `test_call_py.sh`: compiles and runs a Fortran function that calls a Python one via C++
   
 ## Examples:
+Check `3_run_examples.sh` to know how to run the following examples:
+
 - `examples/two_scale/analytical_mat_parameter`
 
   Temperature dependent material parameters are considered here and given as lambda functions in `material_parameters.py`.

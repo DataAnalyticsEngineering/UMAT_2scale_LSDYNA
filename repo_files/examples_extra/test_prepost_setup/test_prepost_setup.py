@@ -1,4 +1,4 @@
-# setpythonhome "/home/alameddin/packages/pyenv/versions/3.6.5/"
+# setpythonhome "<path_to_pyenv>/versions/3.6.5/"
 # runpython example.py
 # runscript sclfilename.scl
 

@@ -5,7 +5,7 @@ import cv2 as cv
 import itertools
 from numpy.fft import fft2, ifft2
 import sys
-sys.path.append('/home/alameddin/src/numerical_tools_and_friends/python/python_templates')
+sys.path.append('~/src/numerical_tools_and_friends/python/python_templates')
 import matplotlib.pyplot as plt
 from scipy import signal
 from scipy.spatial.distance import cdist
@@ -69,9 +69,9 @@ def two_point_correlation(binary_img):
     return c00, c01, c11
 
 
-digital_image_cleaned = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/digital_image_cleaned.npy')
+digital_image_cleaned = np.load('~/src/pyrve/segmentation/segmentation_2d/digital_image_cleaned.npy')
 cutimage = digital_image_cleaned[:800, :]
-particles = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/particles.npy')
+particles = np.load('~/src/pyrve/segmentation/segmentation_2d/particles.npy')
 
 #%% RVE size based on local volume fraction
 # plt.imshow(cutimage)
@@ -96,7 +96,7 @@ particles = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/part
 # ypx = digital_image_cleaned.shape[0]
 # xpx = digital_image_cleaned.shape[1]
 # from lasso.dyna import D3plot
-# d3plot = D3plot("/home/alameddin/.dontsync/arch_dyna_simulations/6_padx/d3plot")
+# d3plot = D3plot("~/.dontsync/arch_dyna_simulations/6_padx/d3plot")
 # x = d3plot.arrays['node_coordinates'][:, 0]
 # y = d3plot.arrays['node_coordinates'][:, 1]
 # t = d3plot.arrays['node_temperature'][1, :]
@@ -253,7 +253,7 @@ generate_3d_rve(rve_side_length, positions, rads, next(cout))
 # from pyhdf.SD import SD, SDC
 # import cv2 as cv
 #
-# file = SD('/home/alameddin/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
+# file = SD('~/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
 # print(file.info())
 # print(file.datasets())
 # # 23: uint16 DFNT_UINT16 (23) 16-bit unsigned integer type
@@ -288,7 +288,7 @@ generate_3d_rve(rve_side_length, positions, rads, next(cout))
 
 #%%
 import matplotlib.pyplot as plt
-particles = np.load('/home/alameddin/src/pyrve/output_py/3d_particles.npy', allow_pickle=True)
+particles = np.load('~/src/pyrve/output_py/3d_particles.npy', allow_pickle=True)
 yall = np.zeros(60)
 rall = []
 for i in range(500):

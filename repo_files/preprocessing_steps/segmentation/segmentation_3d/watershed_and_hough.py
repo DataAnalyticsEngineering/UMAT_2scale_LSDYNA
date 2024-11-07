@@ -51,14 +51,14 @@ def circle(dx, dy, pos_x, pos_y, r):
 
 #%% load 3d image and use watershed to label its pixels and save all peaks/centers
 
-data = np.load('/home/alameddin/src/0data/simkom_input_images/WS_2a.npz')
+data = np.load('~/src/0data/simkom_input_images/WS_2a.npz')
 d3img = data['d3img']
 
 distance = ndi.distance_transform_edt(d3img)
 # distance[distance < 0] = 0
 coords = peak_local_max(distance, footprint=np.ones((30, 30, 30)), labels=d3img)
 # coords = peak_local_max(distance, labels=d3img)
-np.savez('/home/alameddin/src/0data/simkom_input_images/centers_3d.npz', centers=coords)
+np.savez('~/src/0data/simkom_input_images/centers_3d.npz', centers=coords)
 # distance[distance < 0] = 0
 # mask = np.zeros(distance.shape, dtype=bool)
 # mask[tuple(coords.T)] = True
@@ -72,9 +72,9 @@ np.savez('/home/alameddin/src/0data/simkom_input_images/centers_3d.npz', centers
 # plt.show()
 
 #%% draw spheres at the extracted centers and check if they meet the inclusions
-data = np.load('/home/alameddin/src/0data/simkom_input_images/WS_2a.npz')
+data = np.load('~/src/0data/simkom_input_images/WS_2a.npz')
 d3img = data['d3img']
-f = np.load('/home/alameddin/src/0data/simkom_input_images/centers_3d.npz')
+f = np.load('~/src/0data/simkom_input_images/centers_3d.npz')
 centers = f['centers']
 f.close()
 out = []
@@ -97,7 +97,7 @@ for pos in centers:
         d3img[old_idx] = 0
         out.append([*pos, old_r])
 
-np.savez('/home/alameddin/src/0data/simkom_input_images/digital_3d.npz', pos_and_r=np.asarray(out))
+np.savez('~/src/0data/simkom_input_images/digital_3d.npz', pos_and_r=np.asarray(out))
 
 #%% 2D hough transform
 img = d3img[:, 150, :]
@@ -168,7 +168,7 @@ plt.imshow(img[0])
 plt.show()
 
 #%% generate a 3d description of the CT scan
-f = np.load('/home/alameddin/src/0data/simkom_input_images/digital_3d.npz')
+f = np.load('~/src/0data/simkom_input_images/digital_3d.npz')
 pos_and_r = f['pos_and_r']
 f.close()
 
@@ -180,14 +180,14 @@ for s in pos_and_r:
 
 data = pv.wrap(img)
 # data.plot(volume=True)
-data.save("/home/alameddin/src/0data/simkom_input_images/digital_3d.vtk")
+data.save("~/src/0data/simkom_input_images/digital_3d.vtk")
 
 #%% difference
-data = np.load('/home/alameddin/src/0data/simkom_input_images/WS_2a.npz')
+data = np.load('~/src/0data/simkom_input_images/WS_2a.npz')
 d3img = data['d3img']
 err = np.abs(d3img - 1. * img).astype(np.uint8)
 err = img - 1. * d3img
 err[err < 0] = 0
 data = pv.wrap(err.astype(np.uint8))
 # data.plot(volume=True)
-data.save("/home/alameddin/src/0data/simkom_input_images/digital_3d_error.vtk")
+data.save("~/src/0data/simkom_input_images/digital_3d_error.vtk")

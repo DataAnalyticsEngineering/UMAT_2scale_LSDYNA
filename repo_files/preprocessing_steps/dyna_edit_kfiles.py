@@ -32,7 +32,7 @@ def run_shell(command):
     subprocess.call(['/bin/bash', '-i', '-c', command])
 
 
-dyna_path = '/home/alameddin/.dontsync/packages/lsdyna/lsdyna'
+dyna_path = '~/.dontsync/packages/lsdyna/lsdyna'
 
 key_files_folder = 'key_files/'
 output_mesh = path(key_files_folder + 'tmp_out_mesh.k')

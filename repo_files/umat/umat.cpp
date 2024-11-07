@@ -161,7 +161,7 @@ extern "C" void umat_cpp_thermal_rve_(const double& temperature, double& c1, dou
 {
     throw std::runtime_error("umat_cpp_thermal_rve_ is not implemented yet!");
 
-    //     const std::string FILE_NAME = "/home/alameddin/simkom_updates/material/effective_response.h5";
+    //     const std::string FILE_NAME = "<simkom_path>_updates/material/effective_response.h5";
     //
     //     ezh5::File h5file(FILE_NAME, H5F_ACC_RDONLY);
     //     std::vector<double> tempe;

@@ -1,6 +1,6 @@
 import  numpy  as np
 from pyhdf.SD import SD, SDC
-file = SD('/home/alameddin/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
+file = SD('~/src/0data/simkom_input_images/WS_2a.hdf', SDC.READ)
 print(file.info())
 print(file.datasets())
 

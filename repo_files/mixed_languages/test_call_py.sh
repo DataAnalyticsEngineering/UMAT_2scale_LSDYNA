@@ -1,5 +1,5 @@
 # Directory containing python file should be included in PYTHONPATH
-# export PYTHONPATH=/home/alameddin/simkom/src_pyrve/dyna/repo_files/mixed_languages:$PYTHONPATH
+# export PYTHONPATH=<simkom_path>/src_pyrve/dyna/repo_files/mixed_languages:$PYTHONPATH
 
 # use
 # python -m nuitka --module python_example.py

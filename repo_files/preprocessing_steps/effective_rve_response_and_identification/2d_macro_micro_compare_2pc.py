@@ -7,7 +7,7 @@ import itertools
 from numpy.fft import fft2, ifft2
 import sys
 
-sys.path.append('/home/alameddin/src/numerical_tools_and_friends/python/python_templates')
+sys.path.append('~/src/numerical_tools_and_friends/python/python_templates')
 import matplotlib.pyplot as plt
 from scipy import signal
 from scipy.spatial.distance import cdist
@@ -71,10 +71,10 @@ def two_point_correlation(binary_img):
     return c11
 
 
-digital_image_cleaned = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/digital_image_cleaned.npy')
+digital_image_cleaned = np.load('~/src/pyrve/segmentation/segmentation_2d/digital_image_cleaned.npy')
 cutimage = digital_image_cleaned[:800, :]
-particles = np.load('/home/alameddin/src/pyrve/segmentation/segmentation_2d/particles.npy')
-# particles = np.load('/home/alameddin/src/pyrve/output_py/particles.npy')
+particles = np.load('~/src/pyrve/segmentation/segmentation_2d/particles.npy')
+# particles = np.load('~/src/pyrve/output_py/particles.npy')
 
 #%% RVE generation 2D
 cout = iter(range(50))
@@ -99,7 +99,7 @@ pos = next(itx).imshow(c11ref, vmin=0, vmax=0.4, cmap='jet')
 plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
 for aa in ax.flatten():
     aa.axis('off')
-# plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/original_correlation.pdf', dpi=600)
+# plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/original_correlation.pdf', dpi=600)
 plt.show()
 
 #%% one particle
@@ -130,7 +130,7 @@ xy_center = rve_side_length // 2 + 1
 # plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
 # for aa in ax.flatten():
 #     aa.axis('off')
-# plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_1particle_{0}.pdf', dpi=600)
+# plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_1particle_{0}.pdf', dpi=600)
 # plt.show()
 # #TODO check volume_fraction * rve_area - area_disc(r0) - area_disc(r1)
 
@@ -165,7 +165,7 @@ for ii in range(15):
     plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
     for aa in ax.flatten():
         aa.axis('off')
-    plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_2particle_{ii}.pdf')
+    plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_2particle_{ii}.pdf')
     plt.show()
 
 #%% five particles
@@ -201,7 +201,7 @@ for ii in range(15):
     plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
     for aa in ax.flatten():
         aa.axis('off')
-    plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_5particle_{ii}.pdf', dpi=600)
+    plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_5particle_{ii}.pdf', dpi=600)
     plt.show()
 
 #%% six particles
@@ -244,7 +244,7 @@ for ii in range(15):
     plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
     for aa in ax.flatten():
         aa.axis('off')
-    plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_6particle_{ii}.pdf', dpi=600)
+    plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_6particle_{ii}.pdf', dpi=600)
     plt.show()
 
 #%% seven particles
@@ -287,7 +287,7 @@ for ii in range(15):
     plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
     for aa in ax.flatten():
         aa.axis('off')
-    plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_7particle_{ii}.pdf', dpi=600)
+    plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_7particle_{ii}.pdf', dpi=600)
     plt.show()
 
 #%%
@@ -359,7 +359,7 @@ next(itx).imshow(np.abs(c11 - c11ref), vmin=0, vmax=0.4, cmap='jet')
 plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, bottom=0, top=1)
 for aa in ax.flatten():
     aa.axis('off')
-# plt.savefig(f'/home/alameddin/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_6particle_{ii}.pdf', dpi=600)
+# plt.savefig(f'~/src/pyrve/0_geo_and_mesh/rve_2pc/rve_length_{ll}_6particle_{ii}.pdf', dpi=600)
 plt.show()
 
 import h5py
