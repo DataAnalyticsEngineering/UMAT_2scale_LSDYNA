@@ -1,2 +1,2 @@
-setpythonhome "/packages/pyenv/versions/3.6.5/"
+# setpythonhome "/root/.pyenv/versions/x.x.x"
 runpython v02_gen_substrate_with_sets_activation.py

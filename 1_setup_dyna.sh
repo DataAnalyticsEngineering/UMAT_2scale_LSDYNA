@@ -29,9 +29,10 @@ else
   echo "Normal mode"
 
   # Install lsprepost
-  wget -q https://ftp.lstc.com/anonymous/outgoing/lsprepost/4.9/linux64/lsprepost-4.9.11-common-22Nov2022.tgz -O ${PROJECT_DIR}/lsprepost.tgz 
+  rm -rf lsprepost_common
+  wget -q https://ftp.lstc.com/anonymous/outgoing/lsprepost/4.10/linux64/lsprepost-4.10.2-common-05Apr2023.tgz -O ${PROJECT_DIR}/lsprepost.tgz 
   tar xf ${PROJECT_DIR}/lsprepost.tgz -C ${PROJECT_DIR}
-
+  mv lsprepost4.10_common lsprepost_common
   rm -rf $folder $folder_ref
   tar xf ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz && mv -f usermat $folder_ref
   cp -rf $folder_ref $folder

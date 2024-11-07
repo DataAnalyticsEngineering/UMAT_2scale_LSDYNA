@@ -1,3 +1,4 @@
+#!/bin/bash --login
 # /usr/bin/time -v 
 
 ### Step 1
@@ -7,7 +8,7 @@ Xvfb :99 & env DISPLAY=:99 lsprepost c=gen.cfile -nographics && pkill Xvfb
 
 ### Step 2
 # open mesh.k and save without its parts (this was done automatically in python)
-python3 remove_parts.py
+python remove_parts.py
 # lsprepost mesh.k
 # check if duplicate nodes are merged
 

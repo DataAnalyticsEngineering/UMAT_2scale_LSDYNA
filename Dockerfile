@@ -25,7 +25,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash", "-c"] 
 
 # Install dependencies
-RUN apt update -qq && apt install -qq -y meld zlib1g-dev libhdf5-dev libx11-dev lbzip2 libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev libffi-dev libboost-all-dev time clang libgtk2.0-0 libsecret-1-0 libgl1 libglu1-mesa libsm6 libxtst6 libxmu6 libopenjp2-7 libspeex1 libtheora0 libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module alsa-base alsa-utils xvfb
+RUN apt update -qq && apt install -qq -y meld zlib1g-dev libhdf5-dev libx11-dev lbzip2 libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev libffi-dev libboost-all-dev time clang libgtk2.0-0 libsecret-1-0 libgl1 libglu1-mesa libsm6 libxtst6 libxmu6 libopenjp2-7 libspeex1 libtheora0 libvorbis0a libvorbisenc2 libcanberra-gtk-module libcanberra-gtk3-module alsa-base alsa-utils xvfb libnotify4
 
 # Define variables
 ENV HOME="/root"
@@ -33,13 +33,13 @@ ENV PROJECT_DIR="/workspaces/UMAT_2scale_LSDYNA"
 ENV REPO_DIR="${PROJECT_DIR}/repo_files"
 ENV LSDYNA_DIR="${PROJECT_DIR}/lsdyna_object_version"
 ENV LSDYNA_UMAT="./ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz"
-ENV LSPREPOST_DIR="${PROJECT_DIR}/lsprepost4.9_common"
+ENV LSPREPOST_DIR="${PROJECT_DIR}/lsprepost_common"
 
 ENV set_intel_var='source /opt/intel/oneapi/setvars.sh --force'
 ENV LSTC_LICENSE=network
 ENV LSTC_LICENSE_SERVER=31010@localhost
 
-ENV LD_LIBRARY_PATH=$LSPREPOST_DIR/lib:$LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=$LSPREPOST_DIR/lib2:$LD_LIBRARY_PATH
 
 ENV PYENV_ROOT="${HOME}/.pyenv"
 ENV PATH="$PATH:$PYENV_ROOT/shims:$PYENV_ROOT/bin:$LSDYNA_DIR:$LSPREPOST_DIR"
@@ -50,11 +50,13 @@ ENV PYTHONPATH=$PYTHONPATH:$LSDYNA_DIR/umat:$LSDYNA_DIR/mixed_languages
 # Install pyenv
 RUN curl -sS https://pyenv.run | bash
 
-# Install Python 3.8.15 for the LSDYNA UMAT compilation & ensure getting python dynamic libraries
-RUN env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.15 && pyenv global 3.8.15
+# Install Python 3.9.15 for the LSDYNA UMAT compilation & ensure getting python dynamic libraries
+RUN env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.9.15 && pyenv global 3.9.15
 RUN pyenv versions 
 
-# Install pip packages for Python 3.8.15
+ENV PYTHONHOME=$PYENV_ROOT/versions/3.9.15
+
+# Install pip packages for Python
 RUN python -m pip install --upgrade pip && pip install yapf clang-format fprettify numpy
 
 # Set working directory
