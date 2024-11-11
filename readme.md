@@ -34,6 +34,12 @@ Shadi Sharba, Felix Fritzen, Julius Herb. *LS-DYNA two-scale homogenization exte
 
 ## Compiling using docker
 
+- Install docker on your machine. You can use the following command (for further details, please check this [link](https://github.com/docker/docker-install))
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+```
+
 - Obtain the new interface files from GitHub:
 ```
 git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && cd UMAT_2scale_LSDYNA
@@ -41,9 +47,9 @@ git clone https://github.com/DataAnalyticsEngineering/UMAT_2scale_LSDYNA.git && 
 
 - Obtain `ls-dyna_smp_d_R12_0_0_x64_redhat65_ifort160.tgz` usermat package/object version of LS-DYNA from your local distributor of LS-DYNA and place it in `UMAT_2scale_LSDYNA`. Here are some helpful links ([lsdyna-ansys](https://lsdyna.ansys.com/downloader-filter/),[ansys-forum](https://innovationspace.ansys.com/forum/forums/reply/235696/)).
 
-- Using a terminal, run `0_run_in_docker.sh` to build the docker image and enter the running container:
+- Using a terminal, run `0_run_in_docker.sh` to build the docker image and enter the running container. Or use `VSCode` with the `Dev Containers` extension; Open the `UMAT_2scale_LSDYNA` foldr then use `reopen in container` command to build and open the project in the container.
 
-- Inside the docker container, run `1_setup_dyna.sh` to compile the new object version of LS-DYNA. The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
+- Inside the container, run `1_setup_dyna.sh` to compile the new object version of LS-DYNA. The new executable will be placed inside the docker container in `UMAT_2scale_LSDYNA/lsdyna_object_version/lsdynaumat`
 
 ## Test cases:
 You can use `2_run_tests.sh` inside the docker container to run the following test cases:
